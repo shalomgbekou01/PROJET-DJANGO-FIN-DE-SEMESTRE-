@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+
+    <!--BAR DE NAVIGATION-->
+    <div class="entete">
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Liste des catégories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Liste de tous les produits</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Déconnexion</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

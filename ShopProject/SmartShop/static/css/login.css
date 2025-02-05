@@ -1,0 +1,136 @@
+
+
+div.conteneur{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    gap: 30px;
+    
+}
+
+span{
+    color: blue;
+    background-color: white;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.content{
+    position: relative;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    box-shadow: 0px 0px 10px rgba(255 , 255, 255, 0.5);
+    border-radius: 25px;
+    height: 450px;
+    z-index: 1;
+    background-color: white;
+    padding: 0px 0px;
+    animation: afficher linear 0.5s;
+}
+
+div.conteneur::before{
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.field{
+    display: flex;
+    gap: 10px;
+    width: 70%;
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-direction: column;
+    width: 100%;
+}
+
+input{
+    border-color: blue !important;
+}
+
+label{
+    background-color: blue;
+    padding: 2px 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+i{
+    color: white;
+}
+
+h3{
+    margin-top: -20px;
+    
+}
+
+.titre{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    background-color: blue;
+    width: 100%;
+    margin-top: -135px;
+    height: 30px;
+}
+
+h2{
+    color: white;
+    font-size: 20px;
+}
+
+img{
+    width: 75px;
+    margin-right: -12px;
+    margin-top: -10px;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button{
+    width: 72%;
+    margin-right: -10px;
+}
+
+p{
+    color: red;
+    position: absolute;
+    top: 130px;
+    font-weight: bold;
+}
+
+
+@keyframes afficher {
+    from{
+        transform: scale(0);
+    }
+    to{
+        transform: scale(1);
+    }
+}

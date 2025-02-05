@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+
+    <!--chargement du dossier static-->
+    {% load static %}
+    
+    <!--bootstrap-->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+    <!--bootstrap icons-->
+    <link rel="stylesheet" href="{% static 'bootstrap-icons/font/bootstrap-icons.css' %}">
+
+    <!--main css-->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+</head>
+<body>
+    <!--FROMULAIRE DE CONNEXION-->
+    <div class="conteneur">
+        
+        <div class="content">
+            <div class="titre">
+                <h2>connexion</h2>
+            </div>
+            
+            <!--logo centré-->
+            <div class="logo">
+                <img src="{% static 'logo.png' %}" alt=""><h3><span>Smart</span>Shop</h3>
+            </div>
+
+            <!--formulaire-->
+            {% if erreur %}
+                <p>{{erreur}}</p>
+            {% endif %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <!--nom d'utilisateur-->
+                <div class="field">
+                    <label for="username"><i class="bi bi-person-fill"></i></label>
+                    <input type="text" name="username" class="form-control" placeholder="Nom d'utilisateur">
+                </div>
+
+                <!--mot de passe-->
+                <div class="field">
+                    <label for="password"><i class="bi bi-lock-fill"></i></label>
+                    <input type="password" name="password" class="form-control" placeholder="Mot de passe">
+                </div>
+
+                <button class="btn btn-primary">connecter</button>
+            </form>
+
+        </div>
+
+    </div>
+</body>
+</html>
