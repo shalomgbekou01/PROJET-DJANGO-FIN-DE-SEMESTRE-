@@ -1,32 +1,74 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
+
+    
+    <!--bootstrap-->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+    <!--bootstrap icons-->
+    <link rel="stylesheet" href="{% static 'bootstrap-icons/font/bootstrap-icons.css' %}">
+
+    <!--main css-->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block style %} {% endblock %}
 </head>
 <body>
 
     <!--BAR DE NAVIGATION-->
-    <div class="entete">
-        <nav>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Liste des catégories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Liste de tous les produits</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Déconnexion</a>
-                </li>
-            </ul>
-        </nav>
+    <div class="all">
+        <div class="navbar">
+            <!--logo-->
+            <div class="logo">
+                <img class="logo-img" src="{% static 'logo.png' %}" alt=""><h3><span>Smart</span>Shop</h3>
+            </div>
+            <nav>
+                <!--menu de navigation-->
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <i class="bi bi-house-door"></i>
+                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="bi bi-collection"></i>
+                        <a class="nav-link" href="{% url 'ajout_categorie' %}">Ajouter une catégorie</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="bi bi-card-list"></i>
+                        <a class="nav-link" href="#">Ajouter un Produit</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="bi bi-collection"></i>
+                        <a class="nav-link" href="{% url 'liste_categories' %}">Catégories</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="bi bi-card-list"></i>
+                        <a class="nav-link" href="#">Tous les produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <a class="nav-link" href="{% url 'login' %}">Déconnexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="main">
+            <div class="main-title">
+                <h4 class="main-title">
+                    {% block main-title %}
+                    {% endblock %}
+                </h4>
+            </div>
+            {% block body %}
+            {% endblock %}
+        </div>
+    
     </div>
-    {% block body %}
-    {% endblock %}
+    
 </body>
 </html>

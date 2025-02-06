@@ -32,7 +32,7 @@ span{
     z-index: 1;
     background-color: white;
     padding: 0px 0px;
-    animation: afficher linear 0.5s;
+    animation: afficher linear 0.3s;
 }
 
 div.conteneur::before{

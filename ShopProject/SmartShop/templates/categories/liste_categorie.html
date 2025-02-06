@@ -1,0 +1,12 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} liste des catégories {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/categories.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %} liste des catégories {% endblock %}

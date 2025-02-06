@@ -13,8 +13,10 @@ class Client(models.Model):
 
 # classe Categorie définissant la catégorie d'un produit
 class Categorie(models.Model):
-    nom_categorie = models.CharField(max_length=255)
+    nomCategorie = models.CharField(max_length=255)
     dateAjout = models.DateField(auto_now=True)
+    imageCategorie = models.ImageField(upload_to='categories/', null=False, default="default.png")
+    description = models.TextField(default="description categorie")
 
     def __str__(self):
         return f" {self.nom_categorie}"
