@@ -1,3 +1,4 @@
+/*FORMILAIRE D'AJOUT CATEGORIE*/
 div.conteneur{
     width: 100%;
     display: flex;
@@ -6,7 +7,7 @@ div.conteneur{
     min-height: 100vh;
 }
 
-form{
+form.add-form{
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -44,6 +45,128 @@ button{
     font-weight: bold;
 }
 
-.field :nth-child(2){
+.filed-item :nth-child(2){
     box-shadow: 0px 0px 5px rgba(0, 0, 255, 0.5);
+}
+
+div.error{
+    box-shadow: none;
+    color: red;
+}
+
+/* LISTE DES CATEGORIES*/
+/* zone de recherche */
+div.filter{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top:35px;
+    z-index: 99;
+    background-color: white;
+    padding: 5px 0px;
+    margin-bottom: 30px;
+}
+
+form.filter-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+form.filter-form input{
+    background-color: rgb(221, 221, 221);
+}
+
+form button{
+    padding: 7px 15px;
+    background-color: blue;
+    border-radius: 10px;
+    margin-top: 2px;
+    cursor: pointer;
+    border: none;
+    width: 20%;
+
+}
+
+form.filter-form label i{
+    font-weight: bold !important;
+    color: white;
+}
+
+form.filter-form input::placeholder{
+    font-weight: bold;
+}
+
+
+/* carte de catégorie*/
+div.list-container{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.list {
+    display: flex ; 
+    flex-wrap: wrap ; 
+    justify-content: center;
+    padding: 20px; 
+    gap: 40px;
+}
+
+
+.carte {
+    display: flex;
+    background: #fff; 
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5); 
+    overflow: hidden; 
+    transition: transform 0.3s ease-in-out; 
+    width: 250px;
+    min-width: 45%;
+    /* height: 270px; */
+    max-height: 500px;
+}
+
+.carte:hover {
+    transform: translateY(-5px); 
+}
+
+
+.carte img {
+    min-width: 50%;  
+    object-fit: cover;
+}
+
+
+.carte-body {
+    padding: 15px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.carte-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.carte-text {
+    font-size: 1rem;
+    color: #555; 
+}
+
+div.action{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+a.btn-sm{
+    text-align: center;
+    min-width: 35%;
 }

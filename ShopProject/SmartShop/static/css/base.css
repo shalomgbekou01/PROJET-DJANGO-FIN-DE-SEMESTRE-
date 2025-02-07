@@ -37,6 +37,7 @@ div.navbar{
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     position: sticky;
     top: 0;
+    z-index: 100
 }
 
 nav{
@@ -83,13 +84,14 @@ a.nav-link:hover{
 /*bar de titre*/
 
 div.main-title{
-    background-color: gray;
+    background-color: blue;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     position: sticky;
     top: 0;
+    z-index: 100;
 }
 
 div.main{
@@ -97,6 +99,6 @@ div.main{
 }
 
 h4.main-title{
-    color: blue;
+    color: #fff;
 }
 

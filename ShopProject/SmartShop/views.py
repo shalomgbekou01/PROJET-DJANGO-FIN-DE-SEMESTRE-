@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import CategorieForm, ProduitForm
 from .models import Categorie, Produit, Panier, Client, Achat, Facture
+from django.contrib import messages
 
 
 
@@ -39,7 +40,16 @@ def dashboard(request):
 # vue liste_categorie
 
 def liste_categorie(request):
-    return render(request, "categories/liste_categorie.html")
+
+    # recupération du name du formulaire
+    query = request.GET.get("nom")
+    categories = Categorie.objects.all()
+    # si une recherche est éffetuée:
+
+    if query:
+        categories = Categorie.objects.filter(nomCategorie__icontains = query)
+    context = {"categories":categories}
+    return render(request, "categories/liste_categorie.html", context)
 
 
 
@@ -58,6 +68,7 @@ def ajouter_categorie(request):
             oCategorie1 = Categorie(nomCategorie= nom, description= description, imageCategorie= image )
             oCategorie1.save()
 
+            messages.success(request, "catégorie ajoutée avec succès")
             return redirect("liste_categories")
         else:
             return render(request, "categories/ajout_categorie.html", {"categorieForm":categorieForm})
@@ -66,3 +77,11 @@ def ajouter_categorie(request):
     
     return render(request, "categories/ajout_categorie.html", {"categorieForm":categorieForm})
 
+
+# suppression de catégorie
+# supprimer_categorie
+def supprimer_categorie(request, cat_id):
+    categorie = Categorie.objects.get(id = cat_id)
+    categorie.delete()
+    messages.success(request, "catégorie supprimée avec succès")
+    return redirect( "liste_categories")

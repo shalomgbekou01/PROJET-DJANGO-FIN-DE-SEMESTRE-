@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login, dashboard, liste_categorie, ajouter_categorie
+from .views import login, dashboard, liste_categorie, ajouter_categorie, supprimer_categorie
 
 urlpatterns = [
 
@@ -14,6 +14,9 @@ urlpatterns = [
     path("categories/liste_categories", liste_categorie, name="liste_categories"),
 
      # categories: url de la page d'ajout des catégories
-    path("categories/ajouter_categorie", ajouter_categorie, name="ajout_categorie")
+    path("categories/ajouter_categorie", ajouter_categorie, name="ajout_categorie"),
+
+    # supprimer_categorie
+    path("categories/supprimer_categorie/<int:cat_id>", supprimer_categorie, name="delete_categorie")
 
 ]
