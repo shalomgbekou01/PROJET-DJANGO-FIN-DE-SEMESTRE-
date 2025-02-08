@@ -22,6 +22,8 @@
                 <input type="text" id="filter" name="nom" class="form-control" placeholder="filtrer par nom">
                 <button type="submit" class="submit"><i class="bi bi-search"></i></button>
             </form>
+
+            <!--méssages-->
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-success">
@@ -31,28 +33,24 @@
             {% endif %}
         </div>
 
-        <!--méssages-->
-
-       
-
         <!--liste des catégories par carte-->
        <div class="list">
             {% for categorie in categories %}
             <div class="carte">
-                <img src="{{categorie.imageCategorie.url}}" alt="" class="card-ing-top">
+                <img src="{{categorie.imageCategorie.url}}" alt="" class="card-ing-top img-fluid">
                 <div class="carte-body">
                     <h3 class="carte-title">{{categorie.nomCategorie}}</h3>
                     <p class="carte-text">{{categorie.description}}</p>
                     <div class="action">
-                        <a href="#" class="btn btn-success btn-sm">Articles</a>
-                        <a href="#" class="btn btn-primary btn-sm">Détails</a>
-                        <a href="#" class="btn btn-secondary btn-sm">Modifier</a>
+                        <a href="{% url 'categorie_produit' categorie.id %}" class="btn btn-success btn-sm">Articles</a>
+                        <a href="{% url 'details_categorie' categorie.id %}" class="btn btn-primary btn-sm">Détails</a>
+                        <a href="{% url 'modifier_categorie' categorie.id %}" class="btn btn-secondary btn-sm">Modifier</a>
                         <a href="{% url 'delete_categorie' categorie.id %}" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet élément?')">Supprimer</a>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <p class="text-warning">Aucune catégorie trouvé</p>
+            <p class="text-warning">Aucune catégorie trouvée</p>
             {% endfor %}
        </div>
     </div>

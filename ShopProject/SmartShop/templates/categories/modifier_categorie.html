@@ -1,0 +1,49 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} modifier une catégorie {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/categories.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %} modifier une catégorie {% endblock %}
+
+<!--contenu de la page-->
+{% block body %}
+<div class="conteneur">
+
+    <!--formulaire-->
+    <form action="" method="post" enctype="multipart/form-data" class="add-form">
+        {% csrf_token %}
+        <div class="field">
+
+            <div class="filed-item">
+                {{categorieForm.nomCategorie.label_tag}}
+                {{categorieForm.nomCategorie}}
+            </div>
+            {% if categorieForm.nomCategorie.errors %}
+            <div class="error">{{categorieForm.nomCategorie.errors.0}}</div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+             <div class="filed-item">
+                {{categorieForm.description.label_tag}}
+                {{categorieForm.description}}
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="filed-item">
+                {{categorieForm.imageCategorie.label_tag}}
+                {{categorieForm.imageCategorie}}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+        
+    </form>
+</div>
+{% endblock %}

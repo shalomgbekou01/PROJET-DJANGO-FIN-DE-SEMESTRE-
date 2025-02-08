@@ -1,0 +1,257 @@
+/*FORMILAIRE D'AJOUT DE PRODUIT*/
+div.conteneur{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    margin: 20px 0px;
+    
+}
+
+form.add-form{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    border-radius: 15px;
+    height:  fit-content;
+    gap: 30px;
+    padding: 10px 0px;
+}
+
+div.field{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+div.filed-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    gap: 10px;
+}
+
+button{
+    width: 80%;
+}
+
+.field :nth-child(1){
+    font-weight: bold;
+}
+
+.filed-item :nth-child(2){
+    box-shadow: 0px 0px 5px rgba(0, 0, 255, 0.5);
+}
+
+div.error{
+    box-shadow: none;
+    color: red;
+}
+
+
+/* FORMULAIRE DE RECHERCHE */
+
+div.filter{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top:35px;
+    z-index: 99;
+    background-color: white;
+    padding: 5px 0px;
+    margin-bottom: 30px;
+}
+
+form.filter-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+form.filter-form input{
+    background-color: rgb(221, 221, 221);
+}
+
+form button{
+    padding: 7px 15px;
+    background-color: blue;
+    border-radius: 10px;
+    margin-top: 2px;
+    cursor: pointer;
+    border: none;
+    width: 20%;
+
+}
+
+form.filter-form label i{
+    font-weight: bold !important;
+    color: white;
+}
+
+form.filter-form input::placeholder{
+    font-weight: bold;
+}
+
+/* carte de produit*/
+
+div.list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 30px;
+}
+
+div.card{
+    width: 250px;
+    min-width: 200px;
+}
+
+div.prix{
+    display: flex;
+    justify-content: space-between;
+}
+
+div.action{
+    width: 100%;
+    display: flex;
+    gap: 2px;
+}
+
+div.nom_cat{
+    font-size: 20px;
+    margin: 10px 0px;
+    margin-top: 30px;
+    background-color: rgb(212, 212, 212);
+    color: blue;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* détails produits */
+/* Global container */
+.detail-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f8f9fa; /* Gris clair */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Titre principal */
+.detail-titre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #007bff; /* Bleu */
+    margin-bottom: 20px;
+}
+
+.detail-titre h1, .detail-titre h3 {
+    margin: 5px 0;
+}
+
+/* Image du produit */
+.produit-image {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+/* Conteneur des détails */
+.detail-desc {
+    text-align: left;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.detail-desc h3 {
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.detail-desc p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* Boutons d'action */
+.detail-action {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.detail-action .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .detail-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .detail-titre {
+        font-size: 20px;
+    }
+
+    .detail-action {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .detail-action .btn {
+        width: 100%;
+        text-align: center;
+    }
+}

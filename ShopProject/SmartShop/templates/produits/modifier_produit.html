@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Modifier le produit {% endblock %}
+
+{% block main-title %} Modifier {{ produit.nomProduit }} {% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h2 class="text-primary">Modifier le produit</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.nomProduit.label_tag }}
+                {{ form.nomProduit }}
+            </div>
+            <div class="mb-3">
+                {{ form.categorie.label_tag }}
+                {{ form.categorie }}
+            </div>
+            <div class="mb-3">
+                {{ form.imageProduit.label_tag }}
+                {{ form.imageProduit }}
+            </div>
+            <div class="mb-3">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+            </div>
+            <div class="mb-3">
+                {{ form.quantite.label_tag }}
+                {{ form.quantite }}
+            </div>
+            <div class="mb-3">
+                {{ form.prixUnitaire.label_tag }}
+                {{ form.prixUnitaire }}
+            </div>
+            
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+            <a href="{% url 'details_produit' produit.id %}" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

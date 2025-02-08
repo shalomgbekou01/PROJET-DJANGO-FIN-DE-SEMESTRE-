@@ -1,0 +1,80 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} ajouter un produit {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/produits.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %} ajouter un produit {% endblock %}
+
+<!--contenu de la page-->
+{% block body %}
+<div class="conteneur">
+
+    <!--formulaire-->
+    <form action="" method="post" enctype="multipart/form-data" class="add-form">
+        {% csrf_token %}
+        <div class="field">
+
+            <div class="filed-item">
+                {{produitForm.nomProduit.label_tag}}
+                {{produitForm.nomProduit}}
+            </div>
+            {% if produitForm.nomProduit.errors %}
+            <div class="error">{{produitForm.nomProduit.errors.0}}</div>
+            {% endif %}
+        </div>
+
+
+        <div class="field">
+
+            <div class="filed-item">
+                {{produitForm.categorie.label_tag}}
+                {{produitForm.categorie}}
+            </div>
+        </div>
+
+        <div class="field">
+             <div class="filed-item">
+                {{produitForm.description.label_tag}}
+                {{produitForm.description}}
+            </div>
+        </div>
+
+        <div class="field">
+
+            <div class="filed-item">
+                {{produitForm.quantite.label_tag}}
+                {{produitForm.quantite}}
+            </div>
+            {% if produitForm.quantite.errors %}
+            <div class="error">{{produitForm.quantite.errors.0}}</div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+
+            <div class="filed-item">
+                {{produitForm.prixUnitaire.label_tag}}
+                {{produitForm.prixUnitaire}}
+            </div>
+            {% if produitForm.prixUnitaire.errors %}
+            <div class="error">{{produitForm.prixUnitaire.errors.0}}</div>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <div class="filed-item">
+                {{produitForm.imageProduit.label_tag}}
+                {{produitForm.imageProduit}}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+        
+    </form>
+</div>
+{% endblock %}

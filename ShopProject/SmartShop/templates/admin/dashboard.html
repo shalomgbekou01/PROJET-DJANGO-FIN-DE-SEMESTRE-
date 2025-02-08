@@ -1,11 +1,113 @@
-
 {% extends 'base.html' %}
+
+{% load static %}
+
 {% block title %} Dashboard {% endblock %}
 
-{% block main-title %}Dashboard{% endblock %}
+{% block main-title %} Tableau de bord {% endblock %}
 
-{% block body%}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 
-<p>hello</p>
+{% block body %}
+<div class="dash-container">
+    <!-- Statistiques globales -->
+    <div class="total">
+        <div class="total-item">
+            <div class="total-logo">
+                <i class="bi bi-collection"></i>
+            </div>
+            <div class="item-content">
+                <h5>Catégories</h5>
+                <h5>{{ total_categories }}</h5>
+            </div>
+        </div>
+
+        <div class="total-item">
+            <div class="total-logo">
+                <i class="bi bi-box-seam"></i>
+            </div>
+            <div class="item-content">
+                <h5>Produits</h5>
+                <h5>{{ total_produits }}</h5>
+            </div>
+        </div>
+
+        <div class="total-item">
+            <div class="total-logo">
+                <i class="bi bi-cart-check"></i>
+            </div>
+            <div class="item-content">
+                <h5>Total Ventes</h5>
+                <h5>{{ total_ventes }}</h5>
+            </div>
+        </div>
+
+        <div class="total-item">
+            <div class="total-logo">
+                <i class="bi bi-currency-dollar"></i>
+            </div>
+            <div class="item-content">
+                <h5>Chiffre d'affaires</h5>
+                <h5>{{ chiffre_affaires }} FCFA</h5>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Graphique des ventes -->
+    <div class="stats">
+        <h3>Évolution des ventes</h3>
+        <canvas id="salesChart"></canvas>
+    </div>
+
+    <hr>
+
+    <!-- Dernières ventes -->
+    <h3>Dernières ventes</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Total</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vente in dernieres_ventes %}
+            <tr>
+                <td>{{ vente.produit.nomProduit }}</td>
+                <td>{{ vente.quantite }}</td>
+                <td>{{ vente.total }} FCFA</td>
+                <td>{{ vente.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Aucune vente récente</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: 2,
+            datasets: [{
+                label: 'Chiffre d\'affaires',
+                data: "{{ chiffres_ventes|safe }}",
+                borderColor: 'blue',
+                borderWidth: 2
+            }]
+        }
+    });
+</script>
 
 {% endblock %}

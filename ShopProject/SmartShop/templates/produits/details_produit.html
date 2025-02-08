@@ -1,0 +1,44 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} détails  {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/categories.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %} détails du produit {{produit.nomProduit}} {% endblock %}
+
+<!--Main content-->
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+<div class="detail-container">
+    <div class="detail-titre">
+        <h1>Nom: </h1><h1>{{produit.nomProduit}}</h1>
+        <h3>Catégorie: </h3><h1>{{produit.categorie.nomCategorie}}</h1>
+    </div>
+    
+    
+    <img  class="produit-image img-fluid" src="{{ produit.imageProduit.url }}" alt="" >
+    <div class="detail-desc">
+        <h3>Description</h3><p>{{produit.description}}</p>
+        <h3>Dernière Mise à jour</h3><p>{{produit.dateAjout}}</p>
+        <h3>Quantité en stock </h3><p>{{produit.quantite}}</p>
+        <h3>Prix Unitaire </h3><p>{{produit.prixUnitaire}} FCFA</p>
+    </div>
+    
+    <di class="detail-action">
+        <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-secondary">Modifier</a>
+        <a href="{% url 'delete_produit' produit.id %}" class="btn btn-danger" onclick="return confirm('êtes vous sûr de vouloir supprimer cet élément?')">Supprimer</a>
+    </div>
+</div>
+{% endblock %}

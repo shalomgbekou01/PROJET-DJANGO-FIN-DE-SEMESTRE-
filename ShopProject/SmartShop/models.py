@@ -1,32 +1,31 @@
 from django.db import models
 
-# classe Client définissant un client
+# Classe Client définissant un client
 class Client(models.Model):
     nomClient = models.CharField(max_length=255)
-    prenomClient = models.CharField(max_length=255)
     prenomClient = models.CharField(max_length=255)
     adresseClient = models.CharField(max_length=255)
 
     def __str__(self):
-        return f" {self.nomClient} {self.prenomClient}"
+        return f"{self.nomClient} {self.prenomClient}"
 
 
-# classe Categorie définissant la catégorie d'un produit
+# Classe Categorie définissant la catégorie d'un produit
 class Categorie(models.Model):
     nomCategorie = models.CharField(max_length=255)
-    dateAjout = models.DateField(auto_now=True)
+    dateAjout = models.DateTimeField(auto_now=True)
     imageCategorie = models.ImageField(upload_to='categories/', null=False, default="default.png")
     description = models.TextField(default="description categorie")
+    nbreProduit = models.IntegerField(default=0)
 
     def __str__(self):
-        return f" {self.nom_categorie}"
+        return self.nomCategorie
 
 
-
-# classe Produit définissant un produit
+# Classe Produit définissant un produit
 class Produit(models.Model):
     nomProduit = models.CharField(max_length=255)
-    imageProduit  = models.ImageField(null=False, upload_to='produits/')
+    imageProduit = models.ImageField(upload_to='produits/')
     description = models.TextField()
     quantite = models.IntegerField(default=0)
     prixUnitaire = models.FloatField(default=0.0)
@@ -34,35 +33,42 @@ class Produit(models.Model):
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f" {self.nomProduit}"
+        return self.nomProduit
 
 
-
-# classe Facture définissant la facture d'un client
+# Classe Facture définissant la facture d'un client
 class Facture(models.Model):
-    numeroFacture = models.CharField(max_length=50)
+    numeroFacture = models.CharField(max_length=50, unique=True)
     prixTotal = models.FloatField(default=0.0)
     dateFacture = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"Facture {self.numeroFacture}"
 
 
-# classe Panier définissant le panier d'un client
+# Classe Panier définissant le panier d'un client
 class Panier(models.Model):
     nbreProduit = models.IntegerField(default=0)
     prixTotal = models.FloatField(default=0.0)
     statut = models.CharField(
         choices=[("en cours", "En Cours"), ("validé", "Validé")],
+        max_length=10,
         default="en cours"
     )
     client = models.OneToOneField(Client, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"Panier de {self.client.nomClient}"
 
 
-# classe Achat définissant un achat éffectué par le client
+# Classe Achat définissant un achat effectué par le client
 class Achat(models.Model):
+    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)  # Un produit peut être acheté plusieurs fois
+    panier = models.ForeignKey(Panier, on_delete=models.CASCADE)    # Un panier contient plusieurs achats
+    facture = models.ForeignKey(Facture, on_delete=models.SET_NULL, null=True, blank=True)  # Peut être null avant facturation
     prixAchat = models.FloatField(default=0.0)
+    quantite = models.IntegerField(default=1)
     dateAchat = models.DateTimeField(auto_now=True)
-    panier = models.ForeignKey(Panier, on_delete=models.CASCADE)
-    produit = models.OneToOneField(Produit, on_delete=models.CASCADE)
-    facture = models.ForeignKey(Facture, on_delete=models.CASCADE)
-    panier = models.ForeignKey(Panier, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.quantite} x {self.produit.nomProduit} - {self.prixAchat} FCFA"

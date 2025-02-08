@@ -1,0 +1,53 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} produits {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/produits.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %} produits de la catégorie {% endblock %}
+
+<!--Main content-->
+{% block body %}
+    <div class="list-container">
+
+        <!--formulaire de filtrage-->
+        <div class="filter">
+            <form action="{% url 'liste_produits' %}" method="get" class="filter-form">
+                {% csrf_token %}
+                <input type="text" id="filter" name="nom" class="form-control" placeholder="filtrer par nom">
+                <button type="submit" class="submit"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+
+        <!--liste des catégories par carte-->
+        <div class="nom_cat text-center">{{categorie.nomCategorie}}</div>
+            <div class="list">
+                    {% for produit in produits %}
+                    <div class="card">
+                        <img src="{{produit.imageProduit.url}}" alt="" class="card-img-top img-fluid">
+                        <div class="card-body">
+                            <h3 class="card-title">{{produit.nomProduit}}</h3>
+                            <div class="prix">
+                                <p>Prix:</p>
+                                <p class="card-text">{{produit.prixUnitaire}} FCFA</p>
+                            </div>
+                            <p class="card-text">{{produit.description}}</p>
+                            
+                            <div class="action">
+                                <a href="{% url 'details_produit' produit.id %}" class="btn btn-primary btn-sm">Détails</a>
+                                <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-secondary">Modifier</a>
+                                <a href="{% url 'delete_produit' produit.id %}" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet élément?')">Supprimer</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-warning text-center">Aucun produit trouvé</p>
+                    {% endfor %}
+            </div>
+        </div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django import forms
+from .models import Categorie
 
 # classe CategorieForm définissant le  formulaire des catégories
 class CategorieForm(forms.Form):
@@ -27,20 +28,40 @@ class CategorieForm(forms.Form):
 # classe ProduitForm définissant le  formulaire des produits
 class ProduitForm(forms.Form):
     nomProduit = forms.CharField(
+        label= "Nom du produit",
         widget= forms.TextInput(attrs= {"class": "input form-control"})
     )
+
+
+    categorie = forms.ChoiceField(
+        label= "choisissez la categorie",
+        choices=[],
+        widget= forms.Select(attrs= {"class": "form-select"})
+    )
+
+
     imageProduit  = forms.ImageField(
+        label= "Image du produit",
         widget= forms.FileInput(attrs= {"class": "input form-control"})
     )
     description = forms.CharField(
+        label="Description du produit",
         widget= forms.Textarea(attrs= {"class" : "input form-control"})
     )
     quantite = forms.IntegerField(
+        label= "Quantité disponible",
         widget=forms.NumberInput(attrs= {"class": "input form-control"})
     )
     prixUnitaire = forms.FloatField(
+        label= "Prix unitaire",
         widget= forms.NumberInput(attrs= {"class": "input form-control"})
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Remplir le choix des catégories avec les données de la base
+        self.fields['categorie'].choices = [(cat.id, cat.nomCategorie) for cat in Categorie.objects.all()]
+
     
     
 
@@ -59,7 +80,7 @@ class ProduitForm(forms.Form):
     def clean_prixUnitaire(self):
         prix = self.cleaned_data.get("prixUnitaire")
         if prix < 0:
-            raise (forms.ValidationError("la prix doit être supérieure à 0"))  
+            raise (forms.ValidationError("le prix doit être supérieur à 0"))  
         return prix
     
         
