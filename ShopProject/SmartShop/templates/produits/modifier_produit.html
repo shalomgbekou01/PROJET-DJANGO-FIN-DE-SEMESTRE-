@@ -5,6 +5,11 @@
 
 {% block main-title %} Modifier {{ produit.nomProduit }} {% endblock %}
 
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/produits.css' %}">
+    
+{% endblock %}
+
 {% block body %}
 <div class="container mt-4">
     <div class="card shadow p-4">
@@ -15,6 +20,9 @@
             <div class="mb-3">
                 {{ form.nomProduit.label_tag }}
                 {{ form.nomProduit }}
+                {% if form.nomProduit.errors %}
+                <p class="error">{{form.nomProduit.errors.0}}</p>
+                {% endif %}
             </div>
             <div class="mb-3">
                 {{ form.categorie.label_tag }}
@@ -31,10 +39,16 @@
             <div class="mb-3">
                 {{ form.quantite.label_tag }}
                 {{ form.quantite }}
+                {% if form.quantite.errors %}
+                <p class="error">{{form.quantite.errors.0}}</p>
+                {% endif %}
             </div>
             <div class="mb-3">
                 {{ form.prixUnitaire.label_tag }}
                 {{ form.prixUnitaire }}
+                {% if form.prixUnitaire.errors %}
+                <p class="error">{{form.prixUnitaire.errors.0}}</p>
+                {% endif %}
             </div>
             
             <button type="submit" class="btn btn-success">Enregistrer</button>

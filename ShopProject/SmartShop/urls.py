@@ -48,4 +48,7 @@ urlpatterns = [
 
     path("produits/modifier<int:produit_id>", modifier_produit, name= "modifier_produit"),
 
+    # augmenter la quantité d'un produit
+    path("produits/add_quantite/<int:p_id>", add_quantite, name = "add_quantite") 
+
 ]

@@ -7,74 +7,57 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'css/produits.css' %}">
+    
 {% endblock %}
 <!--titre de la bar d'entete-->
 {% block main-title %} ajouter un produit {% endblock %}
 
 <!--contenu de la page-->
 {% block body %}
-<div class="conteneur">
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h2 class="text-primary">Ajouter un produit</h2>
 
-    <!--formulaire-->
-    <form action="" method="post" enctype="multipart/form-data" class="add-form">
-        {% csrf_token %}
-        <div class="field">
-
-            <div class="filed-item">
-                {{produitForm.nomProduit.label_tag}}
-                {{produitForm.nomProduit}}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ produitForm.nomProduit.label_tag }}
+                {{ produitForm.nomProduit }}
+                {% if produitForm.nomProduit.errors %}
+                    <p class="error">{{produitForm.nomProduit.errors.0}}</p>
+                {% endif %}
             </div>
-            {% if produitForm.nomProduit.errors %}
-            <div class="error">{{produitForm.nomProduit.errors.0}}</div>
-            {% endif %}
-        </div>
-
-
-        <div class="field">
-
-            <div class="filed-item">
-                {{produitForm.categorie.label_tag}}
-                {{produitForm.categorie}}
+            <div class="mb-3">
+                {{ produitForm.categorie.label_tag }}
+                {{ produitForm.categorie }}
             </div>
-        </div>
-
-        <div class="field">
-             <div class="filed-item">
-                {{produitForm.description.label_tag}}
-                {{produitForm.description}}
+            <div class="mb-3">
+                {{ produitForm.imageProduit.label_tag }}
+                {{ produitForm.imageProduit }}
             </div>
-        </div>
-
-        <div class="field">
-
-            <div class="filed-item">
-                {{produitForm.quantite.label_tag}}
-                {{produitForm.quantite}}
+            <div class="mb-3">
+                {{ produitForm.description.label_tag }}
+                {{ produitForm.description }}
             </div>
-            {% if produitForm.quantite.errors %}
-            <div class="error">{{produitForm.quantite.errors.0}}</div>
-            {% endif %}
-        </div>
-
-        <div class="field">
-
-            <div class="filed-item">
-                {{produitForm.prixUnitaire.label_tag}}
-                {{produitForm.prixUnitaire}}
+            <div class="mb-3">
+                {{ produitForm.quantite.label_tag }}
+                {{ produitForm.quantite }}
+                {% if produitForm.quantite.errors %}
+                    <p class="error">{{produitForm.quantite.errors.0}}</p>
+                {% endif %}
             </div>
-            {% if produitForm.prixUnitaire.errors %}
-            <div class="error">{{produitForm.prixUnitaire.errors.0}}</div>
-            {% endif %}
-        </div>
-
-        <div class="field">
-            <div class="filed-item">
-                {{produitForm.imageProduit.label_tag}}
-                {{produitForm.imageProduit}}
+            <div class="mb-3">
+                {{ produitForm.prixUnitaire.label_tag }}
+                {{ produitForm.prixUnitaire }}
+                {% if produitForm.prixUnitaire.errors %}
+                    <p class="error">{{produitForm.prixUnitaire.errors.0}}</p>
+                {% endif %}
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Ajouter</button>
-        
-    </form>
+            
+            <button type="submit" class="btn btn-success">Ajouter</button>
+        </form>
+    </div>
 </div>
+
+
 {% endblock %}

@@ -1,60 +1,13 @@
-/*FORMILAIRE D'AJOUT DE PRODUIT*/
-div.conteneur{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    margin: 20px 0px;
-    
-}
+/*FORMULAIRE D'AJOUT DE PRODUIT*/
 
-form.add-form{
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    background-color: white;
-    border-radius: 15px;
-    height:  fit-content;
-    gap: 30px;
-    padding: 10px 0px;
-}
-
-div.field{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-div.filed-item{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 80%;
-    gap: 10px;
-}
-
-button{
-    width: 80%;
-}
-
-.field :nth-child(1){
-    font-weight: bold;
-}
-
-.filed-item :nth-child(2){
-    box-shadow: 0px 0px 5px rgba(0, 0, 255, 0.5);
-}
-
-div.error{
-    box-shadow: none;
+.error{
     color: red;
+    font-size: 12px;
+}
+
+
+.input-error{
+    border: 1px solid red ;
 }
 
 
@@ -100,9 +53,9 @@ form.filter-form label i{
     color: white;
 }
 
-form.filter-form input::placeholder{
-    font-weight: bold;
-}
+/* form.filter-form input::placeholder{
+   
+} */
 
 /* carte de produit*/
 
@@ -115,11 +68,16 @@ div.list{
     margin-bottom: 30px;
 }
 
-div.card{
+div.card-list{
     width: 250px;
     min-width: 200px;
+    height: 320px;
 }
 
+div.card-list img{
+    max-width: 300px;
+    max-height: 40%;
+}
 div.prix{
     display: flex;
     justify-content: space-between;
@@ -129,6 +87,7 @@ div.action{
     width: 100%;
     display: flex;
     gap: 2px;
+    justify-content: center;
 }
 
 div.nom_cat{
@@ -142,26 +101,34 @@ div.nom_cat{
 }
 
 /* détails produits */
-/* Global container */
+
 .detail-container {
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
-    background: #f8f9fa; /* Gris clair */
+    background: #f8f9fa; 
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
 }
 
 /* Titre principal */
 .detail-titre {
     display: flex;
-    flex-direction: column;
     align-items: center;
     font-size: 22px;
     font-weight: bold;
     color: #007bff; /* Bleu */
     margin-bottom: 20px;
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .detail-titre h1, .detail-titre h3 {
@@ -170,7 +137,7 @@ div.nom_cat{
 
 /* Image du produit */
 .produit-image {
-    width: 100%;
+    width:auto;
     max-height: 250px;
     object-fit: cover;
     border-radius: 8px;
@@ -186,11 +153,13 @@ div.nom_cat{
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    width: 90%;
 }
 
 .detail-desc h3 {
     color: #007bff;
     margin-bottom: 5px;
+    
 }
 
 .detail-desc p {
@@ -234,6 +203,40 @@ div.nom_cat{
     background: #c82333;
 }
 
+.detail-desc-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 5px;
+}
+
+/*ajouter en quantité*/
+.detail-container form{
+    display: flex;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.detail-container form input{
+    width: 150px;
+}
+
+.detail-container form label{
+    font-weight: bold;
+    padding: 5px 2px;
+}
+
+.champ{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .detail-container {
@@ -255,3 +258,5 @@ div.nom_cat{
         text-align: center;
     }
 }
+
+

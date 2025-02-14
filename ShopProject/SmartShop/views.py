@@ -113,7 +113,9 @@ def ajouter_categorie(request):
 # supprimer_categorie
 def supprimer_categorie(request, cat_id):
     categorie = Categorie.objects.get(id = cat_id)
+    
     categorie.delete()
+    
     messages.success(request, "catégorie supprimée avec succès")
     return redirect( "liste_categories")
 
@@ -121,13 +123,18 @@ def supprimer_categorie(request, cat_id):
 # détails catégorie
 def details_categorie(request, cat_id):
     categorie = Categorie.objects.get(id = cat_id)
+    nbreproduits = Produit.objects.filter(categorie = categorie).count()
+    categorie.nbreProduit = nbreproduits
+    categorie.save()
     context = {"categorie":categorie}
+    
     return render(request, "categories/details_categorie.html", context)
 
 # modifier catégorie
 
 def modifier_categorie(request, cat_id):
     categorie = Categorie.objects.get(id=cat_id)
+    nbreproduits = Produit.objects.filter(categorie = categorie).count()
 
     if request.method == "POST":
         categorieForm = CategorieForm(request.POST, request.FILES)
@@ -135,10 +142,12 @@ def modifier_categorie(request, cat_id):
             nom = categorieForm.cleaned_data["nomCategorie"]
             description = categorieForm.cleaned_data["description"]
             image = categorieForm.cleaned_data["imageCategorie"]
+            categorie.nbreProduit = categorieForm.cleaned_data["nbreProduit"]
 
             categorie.nomCategorie = nom
             categorie.description = description
             categorie.imageCategorie = image
+            categorie.nbreProduit = nbreproduits
             categorie.save()
 
             messages.success(request, "catégorie modifiée avec succès")
@@ -292,3 +301,26 @@ def modifier_produit(request, produit_id):
         form = ProduitForm(initial=donnees_initiales)
 
     return render(request, 'produits/modifier_produit.html', {'form': form, 'produit': produit})
+
+# augmenter quantité d'u produit
+
+def add_quantite(request, p_id):
+    # récupérer le produit à modifier
+    produit = Produit.objects.get(id = p_id)
+
+    # récupérer la quantité saisie
+    quantite = request.POST.get("quantite")
+
+    if (int)(quantite) < 0:
+        messages.error(request, "la quantité doit être supérieure à 0")
+        return redirect("details_produit", prod_id=p_id)
+        
+    # incrémenter la quantité
+    produit.quantite += int(quantite)
+
+    messages.success(request, "quantité du produit augmenté avec succès")
+
+    # mettre à jour
+    produit.save()
+
+    return redirect("details_produit", prod_id=p_id)

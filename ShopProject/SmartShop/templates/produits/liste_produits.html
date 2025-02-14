@@ -38,7 +38,7 @@
         <div class="nom_cat text-center">{{categorie}}</div>
         <div class="list">
                 {% for produit in produits %}
-                <div class="card">
+                <div class="card card-list">
                     <img src="{{produit.imageProduit.url}}" alt="" class="card-img-top img-fluid">
                     <div class="card-body">
                         <h3 class="card-title">{{produit.nomProduit}}</h3>
@@ -51,7 +51,7 @@
                         <div class="action">
                             <a href="{% url 'details_produit' produit.id %}" class="btn btn-primary btn-sm">Détails</a>
                             <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-secondary">Modifier</a>
-                            <a href="{% url 'delete_produit' produit.id %}" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet élément?')">Supprimer</a>
+                            <a href="{% url 'delete_produit' produit.id %}" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet produit?')">Supprimer</a>
                         </div>
                     </div>
                 </div>

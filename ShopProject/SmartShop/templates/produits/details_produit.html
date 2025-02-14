@@ -6,7 +6,7 @@
 {% block title %} détails  {% endblock %}
 
 {% block style %}
-    <link rel="stylesheet" href="{% static 'css/categories.css' %}">
+    <link rel="stylesheet" href="{% static 'css/produits.css' %}">
 {% endblock %}
 <!--titre de la bar d'entete-->
 {% block main-title %} détails du produit {{produit.nomProduit}} {% endblock %}
@@ -16,29 +16,44 @@
 
 {% if messages %}
     {% for message in messages %}
-        <div class="alert alert-success">
+        <div class="alert alert-danger">
             {{message}}
         </div>
     {% endfor %}
 {% endif %}
 <div class="detail-container">
     <div class="detail-titre">
-        <h1>Nom: </h1><h1>{{produit.nomProduit}}</h1>
-        <h3>Catégorie: </h3><h1>{{produit.categorie.nomCategorie}}</h1>
+        <h3>Nom: </h3><h3>{{produit.nomProduit}}</h3>
+        <h3>Catégorie: </h3><h3>{{produit.categorie.nomCategorie}}</h3>
     </div>
     
     
     <img  class="produit-image img-fluid" src="{{ produit.imageProduit.url }}" alt="" >
     <div class="detail-desc">
-        <h3>Description</h3><p>{{produit.description}}</p>
-        <h3>Dernière Mise à jour</h3><p>{{produit.dateAjout}}</p>
-        <h3>Quantité en stock </h3><p>{{produit.quantite}}</p>
-        <h3>Prix Unitaire </h3><p>{{produit.prixUnitaire}} FCFA</p>
+        <div class="detail-desc-item">
+            <h5>Description</h5><p>{{produit.description}}</p>
+        </div>
+        <div class="detail-desc-item">
+            <h5>Dernière Mise à jour</h5><p>{{produit.dateAjout}}</p>
+        </div>
+        <div class="detail-desc-item">
+            <h5>Quantité en stock </h5><p>{{produit.quantite}}</p>
+        </div>
+        <div class="detail-desc-item">
+            <h5>Prix Unitaire </h5><p>{{produit.prixUnitaire}} FCFA</p>
+        </div>
     </div>
     
-    <di class="detail-action">
+    <div class="detail-action">
+        <a href="#" class="btn btn-primary">Ajouter au panier</a>
         <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-secondary">Modifier</a>
         <a href="{% url 'delete_produit' produit.id %}" class="btn btn-danger" onclick="return confirm('êtes vous sûr de vouloir supprimer cet élément?')">Supprimer</a>
     </div>
+    <form action="{% url 'add_quantite' produit.id %}" method="post" class="">
+        {% csrf_token %}
+        <label for="quantite" >ajouter en quantité</label>
+        <input type="number" name="quantite" id="quantite" class="form-control">
+        <button class="btn btn-outline-primary" type="submit">ajouter</button>
+    </form>
 </div>
 {% endblock %}

@@ -46,12 +46,16 @@ button{
 }
 
 .filed-item :nth-child(2){
-    box-shadow: 0px 0px 5px rgba(0, 0, 255, 0.5);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
 
 div.error{
-    box-shadow: none;
+    font-size: 12px;
     color: red;
+}
+
+.input-error{
+    border: 1px solid red;
 }
 
 /* LISTE DES CATEGORIES*/
