@@ -1,0 +1,22 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} liste des produits {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/panier.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %} choisissez la methode {% endblock %}
+
+<!--Main content-->
+{% block body %}
+    <div class="container">
+        <div class="content">
+            <a href="{% url 'ajout_clic' %}" class="btn btn-primary bt">En un clic</a>
+            <a href="{% url 'ajout_client' %}" class="btn btn-primary bt">Avec facture</a>
+        </div>
+    </div>
+{% endblock %}

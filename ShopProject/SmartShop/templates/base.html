@@ -13,6 +13,15 @@
     <!--bootstrap icons-->
     <link rel="stylesheet" href="{% static 'bootstrap-icons/font/bootstrap-icons.css' %}">
 
+    <!--Jquery et Datatable()-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+
+
+
     <!--main css-->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block style %} {% endblock %}
@@ -21,7 +30,7 @@
 
     <!--BAR DE NAVIGATION-->
     <div class="all">
-        <div class="navbar">
+        <div class="navigationbar"  id="nav" >
             <!--logo-->
             <div class="logo">
                 <img class="logo-img" src="{% static 'logo.png' %}" alt=""><h3><span>Smart</span>Shop</h3>
@@ -35,19 +44,19 @@
                     </li>
                     <li class="nav-item">
                         <i class="bi bi-collection"></i>
-                        <a class="nav-link" href="{% url 'ajout_categorie' %}">Ajouter une catégorie</a>
-                    </li>
-                    <li class="nav-item">
-                        <i class="bi bi-card-list"></i>
-                        <a class="nav-link" href="{% url 'ajout_produit' %}">Ajouter un Produit</a>
-                    </li>
-                    <li class="nav-item">
-                        <i class="bi bi-collection"></i>
                         <a class="nav-link" href="{% url 'liste_categories' %}">Catégories</a>
                     </li>
                     <li class="nav-item">
                         <i class="bi bi-card-list"></i>
-                        <a class="nav-link" href="{% url 'liste_produits' %}">Tous les produits</a>
+                        <a class="nav-link" href="{% url 'liste_produits' 0 %}">Produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="bi bi-collection"></i>
+                        <a class="nav-link" href="{% url 'ajout_categorie' %}">Ajouter une catégorie</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="bi bi-box-seam"></i>
+                        <a class="nav-link" href="{% url 'ajout_produit' %}">Ajouter un Produit</a>
                     </li>
                     <li class="nav-item">
                         <i class="bi bi-box-arrow-left"></i>
@@ -57,18 +66,30 @@
             </nav>
         </div>
 
-        <div class="main">
-            <div class="main-title">
+        <div class="toggler"onclick="reduire()" id="toggle" style=" border: 1px solid gray; position: sticky; top: 200px; padding: 5px 5px ; margin-top: 100px; background-color: rgb(236, 234, 234); border-radius: 5px; height: 40px; cursor: pointer;" >
+            &lt;
+        </div>
+
+        <div class="main" style="margin: 1px 10px;">
+            <div class="main-title" style="display: flex;">
+                <div class="vente">
+                    <a href="{% url 'methode_achat' %}" class="btn btn-success"> <i class="bi bi-cart-plus"></i>  Ajouter une vente</a>
+                </div>
                 <h4 class="main-title">
                     {% block main-title %}
                     {% endblock %}
                 </h4>
+                <div class="vente">
+                    <a href="{% url 'panier' %}" class="btn btn-success panier">
+                        <i class="bi bi-cart"></i> Panier
+                    </a>
+                </div>
             </div>
             {% block body %}
             {% endblock %}
         </div>
-    
     </div>
     <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/html2pdf.bundle.min.js' %}"></script>
 </body>
 </html>

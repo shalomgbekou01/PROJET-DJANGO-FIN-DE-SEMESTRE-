@@ -2,9 +2,10 @@ from django.db import models
 
 # Classe Client définissant un client
 class Client(models.Model):
-    nomClient = models.CharField(max_length=255)
-    prenomClient = models.CharField(max_length=255)
-    adresseClient = models.CharField(max_length=255)
+    nomClient = models.CharField(max_length=255, null=True)
+    prenomClient = models.CharField(max_length=255, null=True)
+    adresseClient = models.CharField(max_length=255, null=True)
+    telephone = models.CharField(max_length=20, default="00000000", null=True)
 
     def __str__(self):
         return f"{self.nomClient} {self.prenomClient}"
@@ -45,7 +46,6 @@ class Facture(models.Model):
     def __str__(self):
         return f"Facture {self.numeroFacture}"
 
-
 # Classe Panier définissant le panier d'un client
 class Panier(models.Model):
     nbreProduit = models.IntegerField(default=0)
@@ -63,12 +63,23 @@ class Panier(models.Model):
 
 # Classe Achat définissant un achat effectué par le client
 class Achat(models.Model):
-    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)  # Un produit peut être acheté plusieurs fois
-    panier = models.ForeignKey(Panier, on_delete=models.CASCADE)    # Un panier contient plusieurs achats
-    facture = models.ForeignKey(Facture, on_delete=models.SET_NULL, null=True, blank=True)  # Peut être null avant facturation
+    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)  
+    panier = models.ForeignKey(Panier, on_delete=models.CASCADE)   
+    facture = models.ForeignKey(Facture, on_delete=models.SET_NULL, null=True, blank=True) 
     prixAchat = models.FloatField(default=0.0)
     quantite = models.IntegerField(default=1)
     dateAchat = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.quantite} x {self.produit.nomProduit} - {self.prixAchat} FCFA"
+
+
+# classe Vente définissant les informations sur une vente effectuée
+
+class Vente(models.Model):
+    nomClient = models.CharField(max_length = 255, default="")
+    prenomClient = models.CharField(max_length = 255, default="")
+    telephone = models.CharField(max_length = 255, default="")
+    adresse = models.CharField(max_length = 255, default="")
+    prixtTotal = models.FloatField(default=0.0)
+    dateVente = models.DateField(auto_now  = True)

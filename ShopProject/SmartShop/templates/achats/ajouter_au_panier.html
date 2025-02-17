@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}
+<h5>Ajouter {{ produit.nomProduit }} au panier</h5>
+
+<form method="POST" class="w-50">
+    {% csrf_token %}
+    <label>Quantité :</label>
+    <input type="number" name="quantite" min="1" value="1" class="form-control" required >
+    <button class="btn btn-primary" type="submit">Ajouter</button>
+</form>
+
+{% endblock %}

@@ -11,6 +11,32 @@
 }
 
 
+/* achat de produit */
+
+.list-container::before{
+    content:"";
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: fit-content;
+    position:absolute;
+    top:0;
+}
+
+
+.modalPanier{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    height: 500px;
+    width: 100%;
+}
+
+.modal-content{
+    width: 50%;
+    border: 1px solid gray;
+    border-radius:10px;
+}
 /* FORMULAIRE DE RECHERCHE */
 
 div.filter{
@@ -19,7 +45,7 @@ div.filter{
     justify-content: space-between;
     align-items: center;
     position: sticky;
-    top:35px;
+    top:45px;
     z-index: 99;
     background-color: white;
     padding: 5px 0px;
@@ -68,13 +94,13 @@ div.list{
     margin-bottom: 30px;
 }
 
-div.card-list{
+div.card{
     width: 250px;
-    min-width: 200px;
-    height: 320px;
+    max-width: 230px;
+    height: 300px;
 }
 
-div.card-list img{
+div.card img{
     max-width: 300px;
     max-height: 40%;
 }
@@ -86,7 +112,7 @@ div.prix{
 div.action{
     width: 100%;
     display: flex;
-    gap: 2px;
+    gap: 10px;
     justify-content: center;
 }
 
@@ -123,21 +149,27 @@ div.nom_cat{
     align-items: center;
     font-size: 22px;
     font-weight: bold;
-    color: #007bff; /* Bleu */
     margin-bottom: 20px;
     width: 100%;
     gap: 10px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .detail-titre h1, .detail-titre h3 {
     margin: 5px 0;
 }
 
+.detail-titre1{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+
 /* Image du produit */
 .produit-image {
-    width:auto;
+    max-width:300px;
     max-height: 250px;
     object-fit: cover;
     border-radius: 8px;
@@ -259,4 +291,10 @@ div.nom_cat{
     }
 }
 
+
+@media (max-width : 820px){
+    .table-bordered{
+        width: 80% !important;
+    }
+}
 

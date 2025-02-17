@@ -21,8 +21,6 @@ class CategorieForm(forms.Form):
         if len(nom) < 2:
             raise (forms.ValidationError("le nom de la catégorie doit contenir au moins 2 caractères"))  
         return nom     
-    
-
 
 
 # classe ProduitForm définissant le  formulaire des produits
@@ -83,4 +81,25 @@ class ProduitForm(forms.Form):
             raise (forms.ValidationError("le prix doit être supérieur à 0"))  
         return prix
     
-        
+
+
+# -----------------------------------CLIENT FORM *--------------------------------
+
+class ClientForm(forms.Form):
+    nomClient = forms.CharField(
+        label="Nom du client",
+        widget= forms.TextInput(attrs={"class":"input form-control"})
+    )
+    prenomClient = forms.CharField(
+        label="Prénoms du client",
+         widget= forms.TextInput(attrs={"class":"input form-control"})
+    )
+    adresseClient = forms.CharField(
+        label="Adresse",
+         widget= forms.TextInput(attrs={"class":"input form-control"})
+    )
+
+    telephone= forms.CharField(
+        label="téléphone",
+         widget= forms.TextInput(attrs={"class":"input form-control"})
+    )

@@ -15,22 +15,40 @@
     background: #f8f9fa;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 10px 2px;
     width: 200px;
     display: flex;
     align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+a.total-item:hover{
+    transform: scale(1.1);
+    transition: 0.3s;
 }
 
 .total-logo {
-    font-size: 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 25px;
+    gap: 10px;
+    align-items: center;
     color: blue;
-    margin-right: 15px;
+    
 }
 
 .item-content h5 {
     margin: 5px 0;
     font-weight: bold;
     color: #333;
+}
+
+.item-content{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
 }
 
 .stats {
@@ -60,4 +78,20 @@
 
 .table tr:nth-child(even) {
     background: #f8f9fa;
+}
+
+h5.h5{
+    color: #fff;
+}
+
+div.h5{
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: rgb(124, 124, 235);
+    color: #fff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
 }

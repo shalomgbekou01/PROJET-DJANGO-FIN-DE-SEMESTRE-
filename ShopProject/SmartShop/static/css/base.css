@@ -19,13 +19,25 @@ span{
     font-style: italic;
 }
 
+
+/*toggle*/
+
+.display{
+    position: absolute !important;
+    left: -500px !important;
+}
+
+.rot{
+    transform: rotateY(180deg);
+}
+
 /* all */
 div.all{
     display: flex;
 }
 
 /*navbar*/
-div.navbar{
+div.navigationbar{
     width: 17%;
     display: flex;
     flex-direction: column;
@@ -37,7 +49,8 @@ div.navbar{
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     position: sticky;
     top: 0;
-    z-index: 100
+    z-index: 100;
+    transition: all 0.3s linear !important ;
 }
 
 nav{
@@ -66,6 +79,7 @@ li.nav-item{
 
 a.nav-link{
     width: 100%;
+    font-size: 15px;
 }
 
 
@@ -86,12 +100,13 @@ a.nav-link:hover{
 div.main-title{
     background-color: blue;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     position: sticky;
     top: 0;
     z-index: 100;
+    padding: 5px 10px;
 }
 
 div.main{
@@ -102,3 +117,27 @@ h4.main-title{
     color: #fff;
 }
 
+span.nbre-item{
+    border-radius: 50%;
+    padding: 2px 8px;
+    background-color: #fff;
+    color: green;
+}
+
+
+/* responsivité*/
+
+@media (max-width : 1145px){
+    div.navigationbar{
+        display: none !important;
+    }
+}
+
+
+@media (max-width : 750px){
+    .main-title{
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important; 
+    }
+}

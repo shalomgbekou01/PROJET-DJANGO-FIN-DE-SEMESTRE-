@@ -3,13 +3,13 @@
 
 {% load static %}
 <!--titre de la page-->
-{% block title %} produits {% endblock %}
+{% block title %} produits par catégorie {% endblock %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'css/produits.css' %}">
 {% endblock %}
 <!--titre de la bar d'entete-->
-{% block main-title %} produits de la catégorie {% endblock %}
+{% block main-title %}  catégorie: {{categorie.nomCategorie}} {% endblock %}
 
 <!--Main content-->
 {% block body %}
@@ -17,7 +17,7 @@
 
         <!--formulaire de filtrage-->
         <div class="filter">
-            <form action="{% url 'liste_produits' %}" method="get" class="filter-form">
+            <form action="{% url 'categorie_produit' categorie.id %}" method="post" class="filter-form">
                 {% csrf_token %}
                 <input type="text" id="filter" name="nom" class="form-control" placeholder="filtrer par nom">
                 <button type="submit" class="submit"><i class="bi bi-search"></i></button>
@@ -25,13 +25,12 @@
         </div>
 
         <!--liste des catégories par carte-->
-        <div class="nom_cat text-center">{{categorie.nomCategorie}}</div>
             <div class="list">
                     {% for produit in produits %}
                     <div class="card">
                         <img src="{{produit.imageProduit.url}}" alt="" class="card-img-top img-fluid">
                         <div class="card-body">
-                            <h3 class="card-title">{{produit.nomProduit}}</h3>
+                            <h5 class="card-title">{{produit.nomProduit}}</h5>
                             <div class="prix">
                                 <p>Prix:</p>
                                 <p class="card-text">{{produit.prixUnitaire}} FCFA</p>
@@ -40,8 +39,8 @@
                             
                             <div class="action">
                                 <a href="{% url 'details_produit' produit.id %}" class="btn btn-primary btn-sm">Détails</a>
-                                <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-secondary">Modifier</a>
-                                <a href="{% url 'delete_produit' produit.id %}" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet élément?')">Supprimer</a>
+                                <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-secondary"><i class="bi bi-pen"></i></a>
+                                <a href="{% url 'delete_produit' produit.id %}" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet élément?')"><i class="bi bi-trash"></i></a>
                             </div>
                         </div>
                     </div>

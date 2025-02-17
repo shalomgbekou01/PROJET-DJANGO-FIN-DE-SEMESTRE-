@@ -1,0 +1,79 @@
+/* méthode d'achat*/
+
+div.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+div.content{
+    display:flex;
+    justify-content: space-around;
+    flex-direction: column;
+    border-radius: 5px;
+    width: 50%;
+    padding: 10px 10px;
+    height: 300px;
+}
+
+a.bt{
+    padding:20px 5px ;
+    font-size: 20px;
+    color: #fff;
+}
+
+a.btn:hover{
+    transform: scale(1.2);
+    transition: 0.3s;
+}
+
+
+/* facture*/
+
+#facture {
+    border: 2px solid #ddd;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+div.container-fluid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap:10px
+}
+
+.facture-containt{
+    border: 1px solid gray;
+    padding: 20px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 70%;
+}
+
+div.entete{
+    padding: 10px 10px ;
+    background-color: rgb(209, 206, 206);
+    border-radius: 5px;
+    width: 100%;
+}
+
+.titre{
+    display: flex;
+    justify-content: space-between;
+}
+.corps{
+    width: 100%;
+}
+
+td.total{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}

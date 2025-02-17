@@ -9,56 +9,98 @@
     <link rel="stylesheet" href="{% static 'css/produits.css' %}">
 {% endblock %}
 <!--titre de la bar d'entete-->
-{% block main-title %} produits par catégorie {% endblock %}
+{% block main-title %}  liste des produits {% endblock %}
 
 <!--Main content-->
 {% block body %}
-    <div class="list-container">
+    <div class="list-container" id="list-container">
+
+        <!--méssages-->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
 
         <!--formulaire de filtrage-->
         <div class="filter">
-            <form action="{% url 'liste_produits' %}" method="get" class="filter-form">
+            <form action="{% url 'liste_produits' 0 %}" method="post" class="filter-form">
                 {% csrf_token %}
                 <input type="text" id="filter" name="nom" class="form-control" placeholder="filtrer par nom">
                 <button type="submit" class="submit"><i class="bi bi-search"></i></button>
             </form>
 
-            <!--méssages-->
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-success">
-                        {{message}}
-                    </div>
-                {% endfor %}
-            {% endif %}
+            <form action="{% url 'liste_produits' 0 %}" method="post" class="filter-form">
+                {% csrf_token %}
+                <select name="categorie" id="categorie" class="form-select">
+                    <option value=" ">Toutes les catégories</option>
+                    {% for categorie in categories %}
+                        <option value="{{categorie.nomCategorie}}">{{categorie.nomCategorie}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="submit"><i class="bi bi-search"></i></button>
+            </form>
+
         </div>
 
         <!--liste des catégories par carte-->
-        {% for categorie , produits in produits_par_categorie.items %}
-        <div class="nom_cat text-center">{{categorie}}</div>
         <div class="list">
-                {% for produit in produits %}
-                <div class="card card-list">
-                    <img src="{{produit.imageProduit.url}}" alt="" class="card-img-top img-fluid">
-                    <div class="card-body">
-                        <h3 class="card-title">{{produit.nomProduit}}</h3>
-                        <div class="prix">
-                            <p>Prix:</p>
-                            <p class="card-text">{{produit.prixUnitaire}} FCFA</p>
-                        </div>
-                        <p class="card-text">{{produit.description}}</p>
-                        
-                        <div class="action">
-                            <a href="{% url 'details_produit' produit.id %}" class="btn btn-primary btn-sm">Détails</a>
-                            <a href="{% url 'modifier_produit' produit.id %}" class="btn btn-secondary">Modifier</a>
-                            <a href="{% url 'delete_produit' produit.id %}" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet produit?')">Supprimer</a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+            <table class="table table-striped table-bordered" id="table">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Id</th>
+                        <th>Image</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Prix</th>
+                        <th>quantite</th>
+                        <th>Date d'ajout</th>
+                        <th>ation</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for produit in produits %}
+                        <tr>
+                            <td>{{produit.id}}</td>
+                            <td><img src="{{ produit.imageProduit.url }}" alt="image du produit" class="img-fluid" style="max-width:100px"></td>
+                            <td>{{produit.nomProduit}}</td>
+                            <td>{{produit.description}}</td>
+                            <td>{{produit.prixUnitaire}}</td>
+                            <td>{{produit.quantite}}</td>
+                            <td>{{produit.dateAjout}}</td>
+                            <td class="d-flex" style="justify-content:space-around">
+                                <a title="details" href="{% url 'details_produit' produit.id %}" class="btn btn-primary btn-sm" style="padding:5px 15px"><i class="bi bi-list"></i></a>
+                                <a title="supprimer" href="{% url 'delete_produit' produit.id %}" style="padding:5px 15px" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet produit?')"><i class="bi bi-trash"></i></a>
+                                <button title="ajouter au panier" onclick="ouvrirModale('{{produit.id}}','{{ produit.nomProduit}}')" class="btn btn-success"  style="padding:5px 15px"><i class="bi bi-cart-plus"></i></button>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center text-warning">Aucun produit trouvé</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>                   
        </div>
-       {% empty %}
-        <p class="text-warning text-center">Aucun produit trouvé</p>
-       {% endfor %}
+       
+    </div>
+
+    <!-- Fenêtre modale -->
+    <div id="modalPanier" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span style="cursor: pointer; padding: 4px 8px; font-size: 20px; border-radius: 10px; background-color: red; color: #fff ; width: 40px; font-weight: bold; text-align: center;" class="close" onclick="fermerModale()">&times;</span>
+            <h5>Ajouter au panier</h5>
+            <form id="formPanier" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="prod_id" id="prod_id">
+                <p>Produit: <span id="nom_produit"></span></p>
+                <label>Quantité :</label>
+                <input type="number" name="quantite" min="1" value="1" class="form-control" required>
+                <button class="btn btn-success" type="submit">Ajouter</button>
+            </form>
+        </div>
     </div>
 {% endblock %}

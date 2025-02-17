@@ -15,43 +15,46 @@
 <div class="dash-container">
     <!-- Statistiques globales -->
     <div class="total">
-        <div class="total-item">
+        <a class="total-item" style="text-decoration: none;" href="{% url 'liste_categories' %}">
             <div class="total-logo">
                 <i class="bi bi-collection"></i>
+                <h5 class="text-dark">Catégories</h5>
             </div>
             <div class="item-content">
-                <h5>Catégories</h5>
-                <h5>{{ total_categories }}</h5>
+                <div class="h5"><h5 class="h5">{{ total_categories }}</h5></div>
             </div>
-        </div>
+        </a>
 
-        <div class="total-item">
+        <a class="total-item" style="text-decoration: none;" href="{% url 'liste_produits' 0 %}">
             <div class="total-logo">
                 <i class="bi bi-box-seam"></i>
+                <h5 class="text-dark">Produits</h5>
             </div>
             <div class="item-content">
-                <h5>Produits</h5>
-                <h5>{{ total_produits }}</h5>
+                
+                <div class="h5"><h5 class="h5">{{ total_produits }}</h5></div>
             </div>
-        </div>
+        </a>
 
         <div class="total-item">
             <div class="total-logo">
                 <i class="bi bi-cart-check"></i>
+                <h5 class="text-dark">Total Ventes</h5>
             </div>
             <div class="item-content">
-                <h5>Total Ventes</h5>
-                <h5>{{ total_ventes }}</h5>
+                
+                <div class="h5"><h5 class="h5">{{ total_ventes }}</h5></div>
             </div>
         </div>
 
         <div class="total-item">
             <div class="total-logo">
                 <i class="bi bi-currency-dollar"></i>
+                <h5 class="text-dark">Chiffre d'affaires</h5>
             </div>
             <div class="item-content">
-                <h5>Chiffre d'affaires</h5>
-                <h5>{{ chiffre_affaires }} FCFA</h5>
+                
+                <div class="h5"><h5 class="h5" style="font-size: 15px;">{{ chiffre_affaires }} FCFA</h5></div>
             </div>
         </div>
     </div>
@@ -67,23 +70,22 @@
     <hr>
 
     <!-- Dernières ventes -->
-    <h3>Dernières ventes</h3>
+    <h3>Trois meilleures ventes</h3>
     <table class="table">
         <thead>
             <tr>
-                <th>Produit</th>
-                <th>Quantité</th>
-                <th>Total</th>
                 <th>Date</th>
+                <th>Total FCFA</th>
+                <th>Client</th>
             </tr>
         </thead>
         <tbody>
-            {% for vente in dernieres_ventes %}
+            {% for vente in meilleures_ventes %}
             <tr>
-                <td>{{ vente.produit.nomProduit }}</td>
-                <td>{{ vente.quantite }}</td>
-                <td>{{ vente.total }} FCFA</td>
-                <td>{{ vente.date }}</td>
+                <td>{{ vente.dateVente }}</td>
+                <td>{{ vente.prixtTotal }} </td>
+                <td>{{ vente.nomClient }} {{vente.prenomClient}} 
+                </td>
             </tr>
             {% empty %}
             <tr>

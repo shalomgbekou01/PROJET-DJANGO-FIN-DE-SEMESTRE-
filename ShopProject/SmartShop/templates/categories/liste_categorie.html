@@ -36,13 +36,13 @@
         <!--liste des catégories par carte-->
        <div class="list">
             {% for categorie in categories %}
-            <div class="carte">
+            <div class="card">
                 <img src="{{categorie.imageCategorie.url}}" alt="" class="card-ing-top img-fluid">
-                <div class="carte-body">
-                    <h3 class="carte-title">{{categorie.nomCategorie}}</h3>
-                    <p class="carte-text">{{categorie.description}}</p>
+                <div class="card-body">
+                    <h5 class="card-title">{{categorie.nomCategorie}}</h5>
+                    <p class="card-text">{{categorie.description}}</p>
                     <div class="action">
-                        <a href="{% url 'categorie_produit' categorie.id %}" class="btn btn-success btn-sm">Articles</a>
+                        <a href="{% url 'categorie_produit' categorie.id %}" class="btn btn-success btn-sm">{{categorie.nbreProduit}} Articles</a>
                         <a href="{% url 'details_categorie' categorie.id %}" class="btn btn-primary btn-sm">Détails</a>
                         <a href="{% url 'modifier_categorie' categorie.id %}" class="btn btn-secondary btn-sm">Modifier</a>
                         <a href="{% url 'delete_categorie' categorie.id %}" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet élément?')">Supprimer</a>

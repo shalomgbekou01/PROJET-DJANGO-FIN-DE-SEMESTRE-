@@ -1,0 +1,84 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} facture {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/panier.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %}  facture {% endblock %}
+
+<!--Main content-->
+
+{% block body %}
+    <div class="container-fluid">
+       <div class="facture-containt" id="facture">
+        <div class="entete">
+            <div class="logo">
+                <img class="logo-img" src="{% static 'logo.png' %}" alt=""><h3><span>Smart</span>Shop</h3>
+            </div>
+            <div class="titre">
+                <h4>{{achat.facture.numeroFacture}}</h4>
+                <h6>Date: {{vente.dateVente}}</h6>
+            </div>
+            <div class="client">
+                <table class="table">
+                    <tr>
+                        <th>Nom du client</th>
+                        <td>{{vente.nomClient}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Prénom</th>
+                        <td>{{vente.prenomClient}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Adresse</th>
+                        <td>{{vente.adresse}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Téléphone</th>
+                        <td>{{vente.telephone}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="corps">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="table-secondary">
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix Unitaire (FCFA)</th>
+                        <th>Prix d'achat (FCFA)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for achat in achats %}
+                    <tr>
+                        <td>{{ achat.produit.nomProduit }}</td>
+                        <td>{{ achat.quantite }}</td>
+                        <td>{{ achat.produit.prixUnitaire }}</td>
+                        <td>{{ achat.prixAchat }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr >
+                        <td colspan="1" class="total">
+                            <h6>Total</h6>
+                            <h6>{{vente.prixtTotal}} FCFA</h6>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+       </div>
+
+       <button class="btn mb-5"  onclick="imprimer('{{vente.nomClient}}_'+'{{achat.facture.numeroFacture}}')" style="background-color: yellow;"><i class="bi bi-printer-fill"></i><span>  </span>Imprimer</button>
+    </div>
+{% endblock %}

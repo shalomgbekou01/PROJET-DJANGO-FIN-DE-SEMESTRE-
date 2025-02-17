@@ -1,0 +1,60 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} panier {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/produits.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %}  Panier {% endblock %}
+
+<!--Main content-->
+
+{% block body %}
+
+<!--méssages-->
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if achats %}
+<table class="table" style="padding: 10px 20px;">
+    <tr>
+        <th>Produit</th>
+        <th>Quantité</th>
+        <th>Prix Unitaire (FCFA)</th>
+        <th>Total (FCFA)</th>
+    </tr>
+    {% for achat in achats %}
+    <tr>
+        <td>{{ achat.produit.nomProduit }}</td>
+        <td>{{ achat.quantite }}</td>
+        <td>{{ achat.produit.prixUnitaire }} </td>
+        <td>{{ achat.prixAchat }} </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="5" class="text-center">statut : <span style="padding: 5px 5px; border-radius: 5px; background-color: yellow; font-weight: bold; font-style: italic;">{{panier.statut}}</span></td>
+    </tr>
+</table>
+<p><strong>Total des achats : {{ total }} F CFA</strong></p>
+
+<div class="action">
+    <a href="{% url 'valider_panier' %}" class="btn btn-success" onclick="return confirm('êtes vous sûr de vouloir valider ce panier?')">Valider</a>
+    <a href="{% url 'liste_produits' 0 %}" class="btn btn-primary">Ajouter un produit</a>
+    <a href="{% url 'delete_panier' %}" class="btn btn-danger" onclick="return confirm('êtes vous sûr de vouloir supprimer ce panier?')">Supprimer</a>
+    <a href="{% url 'vider_panier' %}" class="btn btn-warning" onclick="return confirm('êtes vous sûr de vouloir vider ce panier?')">Vider</a>
+</div>
+
+{% else %}
+<p>Aucune vente en cours</p>
+{% endif %}
+
+{% endblock %}
