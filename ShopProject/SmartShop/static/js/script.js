@@ -1,4 +1,4 @@
-var error = document.querySelector(".error")
+var error = document.querySelector(".error");
 
 
 // erreur de remplissage des champs
@@ -12,14 +12,14 @@ if(error){
 }
 
 // gestion des messages
-var message = document.getElementsById("alert");
+var message = document.getElementById("alert");
 
 setTimeout(() => {
     message.style.opacity = "0"
-    message.style.transition = "all 0.3s"
+    message.style.transition = "all 0.3s ease"
     setTimeout(() => {
-        message.style.display = "none";
-    }, 10);
+        message.style.display = "none"
+    }, 300);
 }, 4000);
 
 
@@ -49,13 +49,14 @@ function reduire() {
     togler.classList.toggle("rot")
 }
 
-
-/* vérifier panier*/
-function verifierPanier(statut) {
-    if (statut == "validé") {
-        return confirm("Etes-vous sûr de vouloir supprimer ce panier?")
+ /* vérifier panier */
+ function verifier(statut) {
+    if(statut == "validé"){
+        return confirm("êtes-vous sûr de vouloir valider ce panier ?")
     }else{
-        return confirm("Attention ! ce panier n'est pas encore validé. voulez-vous le supprimer? ")
+        return confirm("Attention ! ce panier n'est pas encore validé. voulez-vous le supprimer ?")
     }
-}
+ }
+
+
 

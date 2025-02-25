@@ -41,7 +41,7 @@ class Produit(models.Model):
 class Panier(models.Model):
     nbreProduit = models.IntegerField(default=0)
     prixTotal = models.FloatField(default=0.0)
-    date_creation = models.DateField(default = "2025-01-01")
+    date_creation = models.DateTimeField(auto_now=True)
     statut = models.CharField(
         choices=[("en cours", "En Cours"), ("validé", "Validé")],
         max_length=10,
@@ -58,7 +58,7 @@ class Facture(models.Model):
     prixTotal = models.FloatField(default=0.0)
     dateFacture = models.DateTimeField(auto_now=True)
     client = models.ForeignKey(Client, on_delete= models.CASCADE)
-    panier = models.OneToOneField(Panier, on_delete = models.PROTECT)
+    panier = models.OneToOneField(Panier, on_delete = models.CASCADE)
 
     def __str__(self):
         return f"Facture {self.numeroFacture}"

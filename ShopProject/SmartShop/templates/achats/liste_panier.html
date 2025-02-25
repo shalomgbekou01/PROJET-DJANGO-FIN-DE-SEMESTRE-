@@ -3,27 +3,39 @@
 
 {% load static %}
 <!--titre de la page-->
-{% block title %} panier {% endblock %}
+{% block title %} liste des paniers {% endblock %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'css/produits.css' %}">
 {% endblock %}
 <!--titre de la bar d'entete-->
-{% block main-title %}  Panier {% endblock %}
+{% block main-title %}  liste des paniers {% endblock %}
 
 <!--Main content-->
 
 {% block body %}
+
+<!--méssages-->
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{message.tags}}" id="alert">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
     <div class="container-fluid">
         <table class="table table-striped mt-4">
             <tr>
                 <th>ID</th>
                 <th>Nom du client</th>
+                <th>Date de création</th>
+                <th>Nombre d'articles</th>
                 <th>Statut</th>
                 <th>Action</th>
             </tr>
             {% for panier in paniers %}
-                <tr>
+                <tr id="panier">
                     <td>{{panier.id}}</td>
                     <td>
                         {% if panier.client.nomClient %}
@@ -32,11 +44,18 @@
                             Anonyme
                         {% endif %}
                     </td>
-                    <td>{{panier.statut}}</td>
-                    <td>
+                    <td class="">{{panier.date_creation}}</td>
+                    <td class="">{{panier.nbreProduit}}</td>
+                    <td class=""> <span class=""> {{panier.statut}}</span></td>
+                    <td >
                         <a href="{% url 'panier' panier.id %}" class="btn btn-primary btn-sm">Détails</a>
-                        <a href="{% url 'delete_panier' panier.id %}" class="btn btn-danger btn-sm" onclick="return verifierPanier('{{panier.statut}}')">Supprimer</a>
-                    </td>
+                        <a href="{% url 'delete_panier' panier.id %}" class="btn btn-danger btn-sm" onclick="return verifier('{{panier.statut}}')">Supprimer</a>
+                        </td>
+                </tr>
+            
+            {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-warning">Aucun panier ajouté</td>
                 </tr>
             {% endfor %}
         </table>

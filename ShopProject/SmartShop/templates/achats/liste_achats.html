@@ -13,7 +13,39 @@
 
 <!--Main content-->
 {% block body %}
-    {% for achat in achats %}
-        <p>{{achat.dateAchat}}</p>
-    {% endfor %}
+    <form action="{% url 'liste_achat' %}" method="post" class="filter-form mt-3">
+        {% csrf_token %}
+       <select name="date" id="date" class="form-select">
+            <option value="" disabled selected>Filtrer par date</option>
+            {% for achat in achats %}
+                <option value="{{achat.dateAchat|date:'Y-m-d'}}">{{achat.dateAchat|date:'Y/m/d'}}</option>
+            {% endfor %}
+       </select>
+        <button type="submit" class="submit"><i class="bi bi-search"></i></button>
+    </form>
+    <table class="table table-bordered table-striped mt-3">
+        <tr class="table-success">
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix d'achat (FCFA)</th>
+            <th>Date d'achat</th>
+            <th>client</th>
+        </tr>
+        {% for achat in achats %}
+            <tr>
+                <td>{{achat.produit.nomProduit}}</td>
+                <td>{{achat.quantite}}</td>
+                <td>{{achat.prixAchat}}</td>
+                <td>{{achat.dateAchat}}</td>
+                <td>
+                    {% if achat.panier.client.nomClient %}
+                        {{achat.panier.client.nomClient}}  {{achat.panier.client.prenomClient}}
+                    {% else %}
+                        Anonyme
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+   
 {% endblock %}

@@ -10,13 +10,13 @@
     
 {% endblock %}
 <!--titre de la bar d'entete-->
-{% block main-title %} ajouter un produit {% endblock %}
+{% block main-title %} ajouter un article {% endblock %}
 
 <!--contenu de la page-->
 {% block body %}
 <div class="container mt-4">
     <div class=" shadow p-4">
-        <h2 class="text-primary">Ajouter un produit</h2>
+        <h2 class="text-primary">Ajouter un arcticle</h2>
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}

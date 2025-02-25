@@ -24,21 +24,22 @@
     {% endfor %}
 {% endif %}
 
-<table class="table table-bordered" style="padding: 10px 20px;">
-    <tr>
-        <td colspan="2">ID: {{panier.id}}</td>
-        <td colspan="2">CLIENT: {% if panier.client.nomClient %}
-                        {{panier.client.nomClient}}
+<table class="table table-bordered mt-4" style="padding: 10px 20px;">
+    <tr class="table-secondary">
+        <th colspan="2" class="text-center">ID: {{panier.id}}</th>
+        <th colspan="3" class="text-center">CLIENT: {% if panier.client.nomClient %}
+                        {{panier.client.nomClient}} {{panier.client.prenomClient}}
                     {% else %}
                         Anonyme
                     {% endif %}
-         </td>
+         </th>
     </tr>
     <tr>
         <th>Produit</th>
         <th>Quantité</th>
         <th>Prix Unitaire (FCFA)</th>
         <th>Total (FCFA)</th>
+        <th>Action</th>
     </tr>
     {% for achat in achats %}
     <tr>
@@ -46,6 +47,11 @@
         <td>{{ achat.quantite }}</td>
         <td>{{ achat.produit.prixUnitaire }} </td>
         <td>{{ achat.prixAchat }} </td>
+        <td>
+            {% if panier.statut == "en cours" %}
+                <a href="{% url 'supprimer_achat' achat.id panier.id %}" class="btn btn-warning btn-sm" onclick="return confirm('êtes-vous sûr de vouloir retirer ce produit du panier ?')">Retirer</>
+            {% endif %}
+        </td>
     </tr>
     {% empty %}
     <tr>
@@ -53,7 +59,7 @@
     </tr>
     {% endfor %}
     <tr>
-        <td colspan="5" class="text-center">statut : <span style="padding: 5px 5px; border-radius: 5px; background-color: yellow; font-weight: bold; font-style: italic;">{{panier.statut}}</span></td>
+        <td colspan="5" class="text-center">Statut : <span style="padding: 5px 5px; border-radius: 5px; background-color: yellow; font-weight: bold; font-style: italic;">{{panier.statut}}</span></td>
     </tr>
 </table>
 <p><strong>Total des achats : {{ total }} F CFA</strong></p>
@@ -63,13 +69,15 @@
     {% if achats %}
         {% if panier.statut == "validé" %}
              <a href="{% url 'facture' panier.id %}" class="btn btn-primary">Voir la facture</a>
+             <a href="{% url 'delete_panier' panier.id %}" class="btn btn-danger" onclick="return confirm('êtes vous sûr de vouloir supprimer ce panier?')">Supprimer</a>
+        {% else %}
+            <a href="{% url 'liste_produits' %}" class="btn btn-primary">Ajouter un produit</a>
+            <a href="{% url 'valider_panier' panier.id  %}" class="btn btn-warning" onclick="return confirm('êtes vous sûr de vouloir valider ce panier?')">valider</a> 
         {% endif %}
-        <a href="{% url 'liste_produits' %}" class="btn btn-primary">Ajouter un produit</a>
-        <a href="{% url 'valider_panier' panier.id %}" class="btn btn-warning" onclick="return confirm('êtes vous sûr de vouloir valider ce panier?')">valider</a> 
     {% else %}
         <a href="{% url 'liste_produits' %}" class="btn btn-primary">Ajouter un produit</a>
     {% endif %}
-    <a href="{% url 'delete_panier' panier.id %}" class="btn btn-danger" onclick="return confirm('êtes vous sûr de vouloir supprimer ce panier?')">Supprimer</a>
+    
     </div>
 
 

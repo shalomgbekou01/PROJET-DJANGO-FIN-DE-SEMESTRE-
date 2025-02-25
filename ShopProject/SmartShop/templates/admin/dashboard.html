@@ -65,11 +65,52 @@
     <!-- Graphique des ventes -->
     <div class="stats ">
         <h3>Évolution des ventes</h3>
-        <canvas id="salesChart" class="w-50"></canvas>
+        <canvas id="salesChart" class=""></canvas>
     </div>
 
     <hr>
-
+    <!--Produits en faible stock-->
+    <div>
+        <h3>Articles en Faibles stock</h3>
+        <table class=" table table-bordered">
+            <tr class="table-warning" style="background-color: red !important;">
+                <th>Article</th>
+                <th>Quantité restante</th>
+            </tr>
+            {% for produit in produits_faible_stock %}
+                <tr>
+                    <td>{{produit.nomProduit}}</td>
+                    <td style="font-size: bold; color: red;">{{produit.quantite}}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="2" class="tex-center">Aucun produit</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <hr>
+    <!--les plus vendus-->
+    <!-- <div>
+        <h3>Trois articles les plus vendus</h3>
+        <table class=" table table-bordered">
+            <tr class="table-warning" style="background-color: red !important;">
+                <th>Article</th>
+                <th>Quantité vendue</th>
+            </tr>
+            {% for achat in plus_vendus %}
+                <tr>
+                    <td>{{achat.produit.nomProduit}}</td>
+                    <td style="font-size: bold; color: red;">{{achat.quantite}}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="2" class="tex-center">Aucun produit</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div> -->
+    <hr>
     <!-- Dernières ventes -->
     <h3>Trois meilleures ventes</h3>
     <table class="table">

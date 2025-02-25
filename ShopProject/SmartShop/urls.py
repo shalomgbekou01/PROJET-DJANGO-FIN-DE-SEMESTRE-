@@ -89,6 +89,9 @@ urlpatterns = [
 
     # afficher facture
 
-    path("achats/facture/<int:panier_id>", facture, name = "facture")
+    path("achats/facture/<int:panier_id>", facture, name = "facture"),
+
+    # supprimer un produit du panier
+    path("achats/supprimer-achat/<int:id_achat>/<int:id_panier>", supprimer_achat, name = "supprimer_achat")
 ]
 

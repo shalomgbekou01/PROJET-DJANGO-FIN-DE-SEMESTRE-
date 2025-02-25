@@ -48,9 +48,15 @@ def dashboard_view(request):
     meilleures_ventes = Facture.objects.order_by('-prixTotal')[:3]
 
     # Récupérer les données des ventes pour le graphique
-    ventes_recent = Facture.objects.order_by('dateFacture')[10:]
+    ventes_recent = Facture.objects.order_by('dateFacture')
     dates_ventes = [vente.dateFacture.strftime("%d/%m") for vente in ventes_recent]
     chiffres_ventes = [vente.prixTotal for vente in ventes_recent]
+
+    # les produits en faible stock
+    produits_faible_stock = Produit.objects.filter(quantite__lt=5)
+
+    # produits les plus vendus
+    plus_vendus = Achat.objects.order_by("-quantite")[:3]
 
     context = {
         'total_categories': total_categories,
@@ -60,6 +66,8 @@ def dashboard_view(request):
         'meilleures_ventes':meilleures_ventes,
         'dates_ventes': json.dumps(dates_ventes),
         'chiffres_ventes': json.dumps(chiffres_ventes),
+        'produits_faible_stock': produits_faible_stock,
+        'plus_vendus':plus_vendus
     }
     return render(request, 'admin/dashboard.html', context)
 
@@ -227,11 +235,11 @@ def liste_produits(request):
     if request.method == "POST":
         categorie_name = request.POST.get("categorie")
         nom = request.POST.get('nom')
-        if nom:
-            produits = Produit.objects.filter(nomProduit__icontains = nom).order_by("nomProduit")
-        elif categorie_name:
+        if categorie_name:
             categorie = Categorie.objects.filter(nomCategorie__icontains = categorie_name)
             produits = Produit.objects.filter(categorie__in = categorie).order_by("nomProduit")
+        else:
+            produits = Produit.objects.filter(nomProduit__icontains = nom).order_by("id")
     else:
         produits = Produit.objects.all().order_by("nomProduit")
   
@@ -391,9 +399,6 @@ def ajouter_au_panier(request, prod_id):
 
         produit = Produit.objects.get(id = prod_id)
         panier = Panier.objects.get(id = panier_id)
-
-        facture = Facture.objects.get(client = panier.client)
-        
         quantite = int(request.POST.get("quantite",1))
 
         # vérifier si la quantité est suffisante
@@ -420,7 +425,7 @@ def ajouter_au_panier(request, prod_id):
                 
         
         prix_total_achat = quantite * produit.prixUnitaire
-        achat = Achat(produit=produit, panier=panier, facture=facture, quantite=quantite, prixAchat=prix_total_achat)
+        achat = Achat(produit=produit, panier=panier, quantite=quantite, prixAchat=prix_total_achat)
         achat.save()
 
         # Mettre à jour le prix total du panier
@@ -428,8 +433,6 @@ def ajouter_au_panier(request, prod_id):
         panier.nbreProduit += quantite
         panier.save()
 
-        facture.prixTotal += prix_total_achat
-        facture.save()
 
         messages.success(request, "Produit ajouté au panier avec succès !")
         return redirect("liste_produits")
@@ -448,7 +451,6 @@ def consulter_panier(request, panier_id):
 # liste des paniers
 
 def liste_panier(request):
-    paniers_en_cours = Panier.objects.filter(statut = "en cours").order_by("-id")
     paniers = Panier.objects.all().order_by("-id")
     return render(request, "achats/liste_panier.html", {"paniers":paniers})
 
@@ -488,7 +490,7 @@ def valider_panier(request, panier_id):
     dernier_numero = Facture.objects.count()
     num_facture = f"{dernier_numero + 1:04d}"
     
-    oFacture1 = Facture(numeroFacture = num_facture, client = panier.client)            
+    oFacture1 = Facture(numeroFacture = num_facture, client = panier.client, prixTotal = panier.prixTotal, panier = panier)            
     oFacture1.save()
 
     messages.success(request, "panier validé avec succès")
@@ -499,11 +501,25 @@ def liste_achats(request):
 
     if request.method =="POST":
         date_achat = request.POST.get("date")
-        achats = Achat.objects.filter(dateAchat = date_achat)
+        achats = Achat.objects.filter(dateAchat = date_achat, panier__statut = "validé")
 
-    achats = Achat.objects.all().order_by("dateAchat")
+    achats = Achat.objects.filter(panier__statut = "validé").order_by("dateAchat")
 
     return render(request, "achats/liste_achats.html", {"achats":achats})
+# supprimer un achat du panier
+
+def supprimer_achat(request, id_achat, id_panier):
+    achat = Achat.objects.get(id = id_achat)
+    panier = Panier.objects.get(id = id_panier)
+    panier.nbreProduit -= achat.quantite
+    panier.save()
+    achat.delete()
+    
+    messages.success(request,"produit retiré du panier")
+    return redirect("panier", panier_id = id_panier)
+
+
+
 # facture
 
 def facture(request, panier_id):

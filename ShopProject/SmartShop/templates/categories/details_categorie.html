@@ -15,15 +15,15 @@
 {% block body %}
 <div class="detail-container">
     <div class="detail-titre">
-        <h1>Titre: </h1><h1>{{categorie.nomCategorie}}</h1>
+        <h5 class="text-dark">Titre: </h5><h5 class="text-dark">{{categorie.nomCategorie}}</h5>
     </div>
     
     
     <img  class="categorie-image img-fluid" src="{{ categorie.imageCategorie.url }}" alt="" >
     <div class="detail-desc">
-        <h3>Description</h3><p>{{categorie.description}}</p>
-        <h3>Dernière Mise à jour</h3><p>{{categorie.dateAjout}}</p>
-        <h3>Nombre d'articles </h3><p>{{categorie.nbreProduit}}</p>
+        <h5 class="text-primary">Description</h5><p>{{categorie.description}}</p>
+        <h5 class="text-primary">Dernière Mise à jour</h5><p>{{categorie.dateAjout}}</p>
+        <h5 class="text-primary">Nombre d'articles </h5><p>{{categorie.nbreProduit}}</p>
         
     </div>
     

@@ -15,8 +15,7 @@
 
     <!--Jquery et Datatable()-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
     <!-- DataTables Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 
@@ -39,34 +38,31 @@
                 <!--menu de navigation-->
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <i class="bi bi-house-door"></i>
+                        <i class="bi bi-house-door-fill"></i>
                         <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <i class="bi bi-collection"></i>
-                        <a class="nav-link" href="{% url 'liste_categories' %}">Catégories</a>
-                    </li>
-                    <li class="nav-item">
-                        <i class="bi bi-card-list"></i>
-                        <a class="nav-link" href="{% url 'liste_produits' %}">Produits</a>
-                    </li>
-                    <li class="nav-item">
-                        <i class="bi bi-collection"></i>
+                        <i class="bi bi-folder-plus"></i>
                         <a class="nav-link" href="{% url 'ajout_categorie' %}">Ajouter une catégorie</a>
                     </li>
                     <li class="nav-item">
                         <i class="bi bi-box-seam"></i>
-                        <a class="nav-link" href="{% url 'ajout_produit' %}">Ajouter un Produit</a>
+                        <a class="nav-link" href="{% url 'ajout_produit' %}">Ajouter un article</a>
                     </li>
 
                     <li class="nav-item">
-                        <i class="bi bi-list"></i>
-                        <a class="nav-link" href="{% url 'liste_achat' %}">Liste des achats</a>
+                        <i class="bi bi-folder"></i>
+                        <a class="nav-link" href="{% url 'liste_categories' %}">Liste des catégories</a>
                     </li>
 
                     <li class="nav-item">
-                        <i class="bi bi-cart"></i>
-                        <a class="nav-link" href="{% url 'liste_panier' %}">Liste des paniers</a>
+                        <i class="bi bi-box"></i>
+                        <a class="nav-link" href="{% url 'liste_produits' %}">Liste des articles</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <i class="bi bi-list-ul"></i>
+                        <a class="nav-link" href="{% url 'liste_achat' %}">Historique des achats</a>
                     </li>
 
                     <li class="nav-item">
@@ -77,19 +73,23 @@
             </nav>
         </div>
 
-        <div class="toggler"onclick="reduire()" id="toggle" style=" border: 1px solid gray; position: sticky; top: 200px; padding: 5px 5px ; margin-top: 100px; background-color: rgb(236, 234, 234); border-radius: 5px; height: 40px; cursor: pointer;" >
+        <div class="toggler" onclick="reduire()" id="toggle" style=" border: 1px solid gray; position: sticky; top: 200px; padding: 5px 5px ; margin-top: 100px; background-color: rgb(236, 234, 234); border-radius: 5px; height: 40px; cursor: pointer;" >
             &lt;
         </div>
 
         <div class="main" style="margin: 1px 10px;">
             <div class="main-title" style="display: flex;">
                 <div class="vente">
-                    <a href="{% url 'methode_achat' %}" class="btn btn-success"> <i class="bi bi-cart-plus"></i>  Ajouter une vente</a>
+                    <a href="{% url 'liste_panier' %}" class="btn btn-info"> <i class="bi bi-basket-fill"></i>  Paniers</a>
                 </div>
-                <h4 class="main-title">
+
+                <h4 class="main-title" style="margin-left: -40px;">
                     {% block main-title %}
                     {% endblock %}
                 </h4>
+                <div class="vente">
+                    <a href="{% url 'methode_achat' %}" class="btn btn-success"> <i class="bi bi-basket-fill"></i>  Ajouter un panier</a>
+                </div>
             </div>
             {% block body %}
             {% endblock %}
