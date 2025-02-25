@@ -1,0 +1,19 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} liste des achats {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/produits.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %}  liste des achats {% endblock %}
+
+<!--Main content-->
+{% block body %}
+    {% for achat in achats %}
+        <p>{{achat.dateAchat}}</p>
+    {% endfor %}
+{% endblock %}

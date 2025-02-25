@@ -22,21 +22,6 @@
     top:0;
 }
 
-
-.modalPanier{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    height: 500px;
-    width: 100%;
-}
-
-.modal-content{
-    width: 50%;
-    border: 1px solid gray;
-    border-radius:10px;
-}
 /* FORMULAIRE DE RECHERCHE */
 
 div.filter{

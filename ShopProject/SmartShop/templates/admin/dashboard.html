@@ -8,7 +8,8 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 {% endblock %}
 
 {% block body %}
@@ -25,7 +26,7 @@
             </div>
         </a>
 
-        <a class="total-item" style="text-decoration: none;" href="{% url 'liste_produits' 0 %}">
+        <a class="total-item" style="text-decoration: none;" href="{% url 'liste_produits' %}">
             <div class="total-logo">
                 <i class="bi bi-box-seam"></i>
                 <h5 class="text-dark">Produits</h5>
@@ -62,9 +63,9 @@
     <hr>
 
     <!-- Graphique des ventes -->
-    <div class="stats">
+    <div class="stats ">
         <h3>Évolution des ventes</h3>
-        <canvas id="salesChart"></canvas>
+        <canvas id="salesChart" class="w-50"></canvas>
     </div>
 
     <hr>
@@ -80,11 +81,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for vente in meilleures_ventes %}
+            {% for facture in meilleures_ventes %}
             <tr>
-                <td>{{ vente.dateVente }}</td>
-                <td>{{ vente.prixtTotal }} </td>
-                <td>{{ vente.nomClient }} {{vente.prenomClient}} 
+                <td>{{ facture.dateFacture }}</td>
+                <td>{{ facture.prixTotal }} </td>
+                <td>{% if facture.client.nomClient %}
+                        {{ facture.client.nomClient }} {{facture.client.prenomClient}} 
+                    {% else %}
+                    Anonyme
+                    {% endif %}
                 </td>
             </tr>
             {% empty %}
@@ -95,21 +100,56 @@
         </tbody>
     </table>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    var ctx = document.getElementById('salesChart').getContext('2d');
-    var salesChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: 2,
-            datasets: [{
-                label: 'Chiffre d\'affaires',
-                data: "{{ chiffres_ventes|safe }}",
-                borderColor: 'blue',
-                borderWidth: 2
-            }]
+    document.addEventListener("DOMContentLoaded", function () {
+        // Vérifie si l'élément canvas existe
+        let canvas = document.getElementById('salesChart');
+       
+
+        // Vérifie si les données sont bien transmises
+       
+
+        let ctx = canvas.getContext('2d');
+
+         // Vérifie s'il existe déjà un graphique et le détruit
+        if (window.salesChart instanceof Chart) {
+            window.salesChart.destroy();
         }
+
+        let datesVentes = JSON.parse('{{ dates_ventes|safe }}');
+        let chiffresVentes = JSON.parse('{{ chiffres_ventes|safe }}');
+
+        window.salesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: datesVentes,
+                datasets: [{
+                    label: 'Évolution des ventes',
+                    data: chiffresVentes ,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    x: { title: { display: true, text: 'Dates', font: { size: 14 } } },
+                    y: { title: { display: true, text: 'Chiffre d\'affaires', font: { size: 14 } }, beginAtZero: true }
+                },
+                plugins: {
+                    legend: { display: true, position: 'top' }
+                }
+            }
+        });
     });
 </script>
+
 
 {% endblock %}

@@ -33,7 +33,7 @@ urlpatterns = [
     path("produits/ajouter", ajouter_produit, name="ajout_produit"),
 
     # liste des produits
-    path("produits/liste/<int:prod_id>", liste_produits, name= "liste_produits"),
+    path("produits/liste", liste_produits, name= "liste_produits"),
 
     # liste des produits d'une catégorie
     path("produits/categorie_produits/<int:categorie_id>", categorie_produits, name="categorie_produit"),
@@ -61,24 +61,34 @@ urlpatterns = [
     # ajouter en un clic
     path("achats/ajouter_en_clic", ajouter_client_clic, name="ajout_clic"),
 
+    # selectionner un produit
+    path("achats/selectionner/<int:prod_id>", selectionner, name = "selectionner"),
+
+
     # ajouter la quantité lors de l'ajout au panier
     path("ajouter-au-panier/<int:prod_id>/", ajouter_au_panier, name="ajout_au_panier"),
 
     # panier
-    path("achats/panier", consulter_panier, name = "panier"),
+    path("achats/panier/<int:panier_id>", consulter_panier, name = "panier"),
 
     # supprimer panier
-    path("achats/supprimer-panier", supprimer_panier, name = "delete_panier"),
+    path("achats/supprimer-panier/<int:panier_id>", supprimer_panier, name = "delete_panier"),
 
     # vider un panier
-    path("achats/vider_panier", vider_panier, name= "vider_panier"),
+    path("achats/vider_panier/<int:panier_id>", vider_panier, name= "vider_panier"),
 
     # valider panier 
+    path("achats/valider-panier/<int:panier_id>", valider_panier, name="valider_panier"),
 
-    path("achats/valider-panier", valider_panier, name="valider_panier"),
+    # liste des achats
+    path("achats/liste-achats", liste_achats, name="liste_achat"),
+    
+    # liste des paniers
+
+    path("achats/liste-paniers", liste_panier, name = "liste_panier"),
 
     # afficher facture
 
-    path("achats/facture", facture, name = "facture")
+    path("achats/facture/<int:panier_id>", facture, name = "facture")
 ]
 

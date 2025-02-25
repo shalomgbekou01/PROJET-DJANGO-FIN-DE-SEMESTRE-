@@ -18,7 +18,7 @@
         <!--méssages-->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-success">
+                <div class="alert alert-{{message.tags}}" id="alert">
                     {{message}}
                 </div>
             {% endfor %}
@@ -26,13 +26,13 @@
 
         <!--formulaire de filtrage-->
         <div class="filter">
-            <form action="{% url 'liste_produits' 0 %}" method="post" class="filter-form">
+            <form action="{% url 'liste_produits' %}" method="post" class="filter-form">
                 {% csrf_token %}
                 <input type="text" id="filter" name="nom" class="form-control" placeholder="filtrer par nom">
                 <button type="submit" class="submit"><i class="bi bi-search"></i></button>
             </form>
 
-            <form action="{% url 'liste_produits' 0 %}" method="post" class="filter-form">
+            <form action="{% url 'liste_produits' %}" method="post" class="filter-form">
                 {% csrf_token %}
                 <select name="categorie" id="categorie" class="form-select">
                     <option value=" ">Toutes les catégories</option>
@@ -74,7 +74,7 @@
                             <td class="d-flex" style="justify-content:space-around">
                                 <a title="details" href="{% url 'details_produit' produit.id %}" class="btn btn-primary btn-sm" style="padding:5px 15px"><i class="bi bi-list"></i></a>
                                 <a title="supprimer" href="{% url 'delete_produit' produit.id %}" style="padding:5px 15px" class="btn btn-danger btn-sm" onclick="return confirm('êtes vous sûr de vouloir supprimer cet produit?')"><i class="bi bi-trash"></i></a>
-                                <button title="ajouter au panier" onclick="ouvrirModale('{{produit.id}}','{{ produit.nomProduit}}')" class="btn btn-success"  style="padding:5px 15px"><i class="bi bi-cart-plus"></i></button>
+                                <a title="ajouter au panier" href="{% url 'selectionner' produit.id %}" class="btn btn-success"  style="padding:5px 15px"><i class="bi bi-cart-plus"></i></a>
                             </td>
                         </tr>
                     {% empty %}
@@ -86,21 +86,5 @@
             </table>                   
        </div>
        
-    </div>
-
-    <!-- Fenêtre modale -->
-    <div id="modalPanier" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span style="cursor: pointer; padding: 4px 8px; font-size: 20px; border-radius: 10px; background-color: red; color: #fff ; width: 40px; font-weight: bold; text-align: center;" class="close" onclick="fermerModale()">&times;</span>
-            <h5>Ajouter au panier</h5>
-            <form id="formPanier" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="prod_id" id="prod_id">
-                <p>Produit: <span id="nom_produit"></span></p>
-                <label>Quantité :</label>
-                <input type="number" name="quantite" min="1" value="1" class="form-control" required>
-                <button class="btn btn-success" type="submit">Ajouter</button>
-            </form>
-        </div>
     </div>
 {% endblock %}

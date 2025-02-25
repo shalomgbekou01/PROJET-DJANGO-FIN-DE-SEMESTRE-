@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import CategorieForm, ProduitForm, ClientForm
-from .models import Categorie, Produit, Panier, Client, Achat, Facture, Vente
+from .models import Categorie, Produit, Panier, Client, Achat, Facture
 from django.contrib import messages
 from django.db.models import Sum
+import json
 
 
 
@@ -40,16 +41,16 @@ def logout(request):
 def dashboard_view(request):
     total_categories = Categorie.objects.count()
     total_produits = Produit.objects.count()
-    total_ventes = Vente.objects.count()
-    chiffre_affaires = Vente.objects.aggregate(Sum('prixtTotal'))['prixtTotal__sum'] or 0
+    total_ventes = Facture.objects.count()
+    chiffre_affaires = Facture.objects.aggregate(Sum('prixTotal'))['prixTotal__sum'] or 0
 
     # Récupérer les dernières ventes
-    meilleures_ventes = Vente.objects.order_by('-prixtTotal')[:3]
+    meilleures_ventes = Facture.objects.order_by('-prixTotal')[:3]
 
     # Récupérer les données des ventes pour le graphique
-    ventes_recent = Vente.objects.order_by('dateVente')[:10]
-    dates_ventes = [vente.dateVente.strftime("%d/%m") for vente in ventes_recent]
-    chiffres_ventes = [vente.prixtTotal for vente in ventes_recent]
+    ventes_recent = Facture.objects.order_by('dateFacture')[10:]
+    dates_ventes = [vente.dateFacture.strftime("%d/%m") for vente in ventes_recent]
+    chiffres_ventes = [vente.prixTotal for vente in ventes_recent]
 
     context = {
         'total_categories': total_categories,
@@ -57,8 +58,8 @@ def dashboard_view(request):
         'total_ventes': total_ventes,
         'chiffre_affaires': chiffre_affaires,
         'meilleures_ventes':meilleures_ventes,
-        'dates_ventes': dates_ventes,
-        'chiffres_ventes': chiffres_ventes,
+        'dates_ventes': json.dumps(dates_ventes),
+        'chiffres_ventes': json.dumps(chiffres_ventes),
     }
     return render(request, 'admin/dashboard.html', context)
 
@@ -209,7 +210,7 @@ def ajouter_produit(request):
                 produit.save()
 
             messages.success(request, "produit ajouté avec succès")
-            return redirect("liste_produits", prod_id = 0)
+            return redirect("liste_produits")
         else:
             return render(request, "produits/ajout_produit.html", {"produitForm":produitForm})
     else:
@@ -220,21 +221,19 @@ def ajouter_produit(request):
 
 
 # liste des produits
-def liste_produits(request, prod_id = 0):
+def liste_produits(request):
     categories = Categorie.objects.all()
      # recupération du name du formulaire
     if request.method == "POST":
         categorie_name = request.POST.get("categorie")
         nom = request.POST.get('nom')
         if nom:
-            produits = Produit.objects.filter(nomProduit__icontains = nom)
+            produits = Produit.objects.filter(nomProduit__icontains = nom).order_by("nomProduit")
         elif categorie_name:
             categorie = Categorie.objects.filter(nomCategorie__icontains = categorie_name)
-            produits = Produit.objects.filter(categorie__in = categorie)
-    elif prod_id != 0:
-        produits = Produit.objects.filter(id = prod_id)
+            produits = Produit.objects.filter(categorie__in = categorie).order_by("nomProduit")
     else:
-        produits = Produit.objects.all()
+        produits = Produit.objects.all().order_by("nomProduit")
   
     context = {"produits":produits, "categories":categories}
     return render(request, "produits/liste_produits.html", context)
@@ -264,14 +263,12 @@ def supprimer_produit(request, prod_id):
     produit = Produit.objects.get(id = prod_id)
     produit.delete()
     messages.success(request, "produit supprimé avec succès")
-    return redirect( "liste_produits", prod_id = 0)
+    return redirect( "liste_produits")
 
 
 # modifier un produit
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from .models import Produit, Categorie
-from .forms import ProduitForm
+
 
 def modifier_produit(request, produit_id):
     # Récupérer le produit ou afficher une erreur 404 s'il n'existe pas
@@ -317,7 +314,7 @@ def add_quantite(request, p_id):
     quantite = request.POST.get("quantite")
 
     if (int)(quantite) < 0:
-        messages.error(request, "la quantité doit être supérieure à 0")
+        messages.error(request, "la quantité doit être supérieure à 0", extra_tags="danger")
         return redirect("details_produit", prod_id=p_id)
         
     # incrémenter la quantité
@@ -332,8 +329,7 @@ def add_quantite(request, p_id):
 
 
 
-
-         # ------------------------ PANIERS ACHATS VENTES FACTURES---------------------------------
+# ------------------------ PANIERS ACHATS VENTES FACTURES ---------------------------------
     
 #  effectuer une vente -> enrégistrer le client -> créer un panier
 def methode_achat(request):
@@ -341,24 +337,16 @@ def methode_achat(request):
 
 # ajouter un client
 def ajouter_client_clic(request):
-    client = Client.objects.last()
-    if client:
-        client.delete()
 
     oClient = Client(nomClient = "", prenomClient = "", adresseClient =  "", telephone ="")
     oClient.save()
 
-     # créer la facture
-    dernier_numero = Facture.objects.count()
-    num_facture = f"facture_{dernier_numero + 1:04d}"
-    
-    oFacture1 = Facture(numeroFacture =num_facture)            
-    oFacture1.save()
     # créer un panier pour le client
     oPanier1 = Panier(client = oClient)
     oPanier1.save()
-
-    return redirect("liste_produits", prod_id = 0)
+    
+    messages.success(request, "panier créé avec succès")
+    return redirect("liste_produits")
 
     
 # recupérer les infos du client
@@ -374,71 +362,63 @@ def ajouter_client(request):
             adresse = form.cleaned_data["adresseClient"]
             tel = form.cleaned_data["telephone"]
 
-            # supprimer la dernière vente
-            client = Client.objects.last()
-            if client:
-                client.delete()
-
             # enrégistrer le client
             oClient1 = Client(nomClient = nom, prenomClient = prenom, adresseClient =  adresse, telephone = tel)
             oClient1.save()
 
-            # créer la facture
-            dernier_numero = Facture.objects.count()
-            num_facture = f"facture_{dernier_numero + 1:04d}"
-            
-            oFacture1 = Facture(numeroFacture =num_facture)            
-            oFacture1.save()
-
             # créer un panier pour le client
             oPanier1 = Panier(client = oClient1)
             oPanier1.save()
-
-            return redirect("liste_produits", prod_id = 0)
+            messages.success(request, "panier créé avec succès")
+            return redirect("liste_produits")
     else:
         form = ClientForm()
         return render(request, "achats/ajout_panier.html", {"form":form})
 
+# selectionner un produit
+
+def selectionner(request, prod_id):
+    produit = Produit.objects.get(id = prod_id)
+    paniers = Panier.objects.filter(statut = "en cours").order_by("-id")
+    return render(request, "achats/selectionner.html", {"produit":produit, "paniers":paniers})
 
 
 # ajout des produits au panier
 
-
 def ajouter_au_panier(request, prod_id):
-    produit = Produit.objects.get(id = prod_id)
-    panier = Panier.objects.last()
-    
-    if not panier:
-        messages.error(request, "veillez ajouter un client d'abord")
-        return redirect("liste_produits", prod_id = 0)
-
     if request.method == "POST":
+        panier_id = request.POST.get("panier")
+
+        produit = Produit.objects.get(id = prod_id)
+        panier = Panier.objects.get(id = panier_id)
+
+        facture = Facture.objects.get(client = panier.client)
+        
         quantite = int(request.POST.get("quantite",1))
 
         # vérifier si la quantité est suffisante
         if quantite > produit.quantite:
-            messages.error(request, "Stock insuffisant.")
-            return redirect("liste_produits", prod_id = 0)
+            messages.error(request, "Stock insuffisant.", extra_tags="danger")
+            return redirect("selectionner", prod_id = prod_id)
 
-        # Vérifier si le client a une facture
-        facture = Facture.objects.last()
+                
 
         # Ajouter le produit au panier
 
-        achat = Achat.objects.last()
-        
+        achats = Achat.objects.filter(panier = panier)
+                
         # vérifier si le produit est déjà ajouté au panier
-        if achat:
-            if achat.produit.nomProduit == produit.nomProduit:
-                achat = Achat.objects.last()
-                achat.quantite += quantite
-                achat.prixAchat = achat.quantite * produit.prixUnitaire
-                achat.save()
-
-                messages.success(request, "Produit ajouté au panier avec succès !")
-                return redirect("liste_produits", prod_id = 0)
+        if achats:
+            for achat in achats:
+                if achat.produit == produit:
+                    achat.quantite += quantite
+                    achat.prixAchat = achat.quantite * produit.prixUnitaire
+                    achat.save()
         
-            
+                    messages.success(request, "Produit ajouté au panier avec succès !")
+                    return redirect("liste_produits")
+                
+        
         prix_total_achat = quantite * produit.prixUnitaire
         achat = Achat(produit=produit, panier=panier, facture=facture, quantite=quantite, prixAchat=prix_total_achat)
         achat.save()
@@ -448,72 +428,92 @@ def ajouter_au_panier(request, prod_id):
         panier.nbreProduit += quantite
         panier.save()
 
-        if facture:
-            facture.prixTotal += prix_total_achat
-            facture.save()
+        facture.prixTotal += prix_total_achat
+        facture.save()
 
         messages.success(request, "Produit ajouté au panier avec succès !")
-        return redirect("liste_produits", prod_id = 0)
+        return redirect("liste_produits")
 
-    return render(request, "achats/ajouter_au_panier.html", {"produit": produit})
+    # return render(request, "achats/ajouter_au_panier.html", {"produit": produit})
 
 
 # Vue pour afficher le panier
-def consulter_panier(request):
-    panier = Panier.objects.last()
+def consulter_panier(request, panier_id):
+    panier = Panier.objects.get(id = panier_id)
     achats = Achat.objects.filter(panier=panier)
     total = sum(achat.prixAchat for achat in achats)
 
     return render(request, "achats/panier.html", {"achats": achats, "total": total, "panier":panier})
 
+# liste des paniers
+
+def liste_panier(request):
+    paniers_en_cours = Panier.objects.filter(statut = "en cours").order_by("-id")
+    paniers = Panier.objects.all().order_by("-id")
+    return render(request, "achats/liste_panier.html", {"paniers":paniers})
+
 # supprimer le panier
-def supprimer_panier(request):
-    panier = Panier.objects.last()
+def supprimer_panier(request, panier_id):
+    panier = Panier.objects.get(id = panier_id)
     panier.delete()
-    return redirect("panier")
+    messages.success(request, "panier supprimé avec succès")
+    return redirect("liste_panier")
 
 # vider un panier
 
-def vider_panier(request):
-    panier = Panier.objects.last()
+def vider_panier(request, panier_id):
+    panier = Panier.objects.get(id = panier_id)
     achats = Achat.objects.filter(panier = panier)
-    
+
     achats.delete()
-    return redirect("panier")
+    messages.success(request, "panier vidé avec succès")
+    return redirect("panier", panier_id = panier_id)
 
 # valider achat
 
-def valider_panier(request):
-    panier = Panier.objects.last()
-    if panier.statut == "validé":
-        messages.error(request, "ce panier est déjà validé. Veillez ajouter une nouvelle vente")
-        return redirect("panier")
+def valider_panier(request, panier_id):
+    panier = Panier.objects.get(id = panier_id)
+    achats = Achat.objects.filter(panier = panier)
+    
+    for achat in achats:
+        achat.produit.quantite -= achat.quantite
+        achat.produit.save()
+
     panier.statut = "validé"
     panier.save()
-    achats = Achat.objects.filter(panier = panier)
-
-    produits_in_achats = achats
-
     
-    oVente = Vente(nomClient = panier.client.nomClient, prenomClient = panier.client.prenomClient, prixtTotal = sum(achat.prixAchat for achat in achats), telephone = panier.client.telephone, adresse = panier.client.adresseClient)
-    oVente.save()
-
-    return redirect("facture")
 
 
+    # créer une facture pour le client
+    dernier_numero = Facture.objects.count()
+    num_facture = f"{dernier_numero + 1:04d}"
+    
+    oFacture1 = Facture(numeroFacture = num_facture, client = panier.client)            
+    oFacture1.save()
+
+    messages.success(request, "panier validé avec succès")
+    return redirect("facture", panier_id = panier_id)
+
+# liste des achats
+def liste_achats(request):
+
+    if request.method =="POST":
+        date_achat = request.POST.get("date")
+        achats = Achat.objects.filter(dateAchat = date_achat)
+
+    achats = Achat.objects.all().order_by("dateAchat")
+
+    return render(request, "achats/liste_achats.html", {"achats":achats})
 # facture
 
-def facture(request):
-    facture = Facture.objects.last()
-    achat  = Achat.objects.last()
-    vente = Vente.objects.last()
+def facture(request, panier_id):
+    panier = Panier.objects.get(id = panier_id)
+    facture = Facture.objects.get(client = panier.client)
 
-    panier = Panier.objects.last()
     achats = Achat.objects.filter(panier=panier)
 
     context = {
-        "achat":achat,
-        "vente": vente,
-        "achats": achats
+        "achats": achats,
+        "facture":facture
     }
     return render(request, "achats/facture.html", context = context)

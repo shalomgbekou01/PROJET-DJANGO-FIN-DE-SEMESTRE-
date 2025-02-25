@@ -48,7 +48,7 @@
                     </li>
                     <li class="nav-item">
                         <i class="bi bi-card-list"></i>
-                        <a class="nav-link" href="{% url 'liste_produits' 0 %}">Produits</a>
+                        <a class="nav-link" href="{% url 'liste_produits' %}">Produits</a>
                     </li>
                     <li class="nav-item">
                         <i class="bi bi-collection"></i>
@@ -58,6 +58,17 @@
                         <i class="bi bi-box-seam"></i>
                         <a class="nav-link" href="{% url 'ajout_produit' %}">Ajouter un Produit</a>
                     </li>
+
+                    <li class="nav-item">
+                        <i class="bi bi-list"></i>
+                        <a class="nav-link" href="{% url 'liste_achat' %}">Liste des achats</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <i class="bi bi-cart"></i>
+                        <a class="nav-link" href="{% url 'liste_panier' %}">Liste des paniers</a>
+                    </li>
+
                     <li class="nav-item">
                         <i class="bi bi-box-arrow-left"></i>
                         <a class="nav-link" href="{% url 'login' %}">Déconnexion</a>
@@ -79,11 +90,6 @@
                     {% block main-title %}
                     {% endblock %}
                 </h4>
-                <div class="vente">
-                    <a href="{% url 'panier' %}" class="btn btn-success panier">
-                        <i class="bi bi-cart"></i> Panier
-                    </a>
-                </div>
             </div>
             {% block body %}
             {% endblock %}

@@ -12,52 +12,19 @@ if(error){
 }
 
 // gestion des messages
-var message = document.querySelector('.alert')
+var message = document.getElementsById("alert");
 
 setTimeout(() => {
-    message.style.display = "none";
+    message.style.opacity = "0"
     message.style.transition = "all 0.3s"
+    setTimeout(() => {
+        message.style.display = "none";
+    }, 10);
 }, 4000);
 
 
-// datatable avec jquery
-
-// $(document).ready(function(){
-//     $('#table').DataTable({
-//         "paging": true,
-//         "ordering": true,
-//         "searching": true,
-//         "info": true,
-//         "language": {
-//             "zeroRecords": "Aucun résultat trouvé",
-//             "pageLength":5,
-//             "paginate": {
-//                 "first": "Premier",
-//                 "last": "Dernier",
-//                 "next": ">",
-//                 "previous": "<"
-//             }
-//         },
-//         "dom": '<"top"l>rt<"bottom"ip><"clear">'
-//     });
-// });
 
 
-function ouvrirModale(id, nom) {
-    document.getElementById("list-container").classList.add("list-container::before")
-    document.getElementById("modalPanier").style.display = "flex";
-    document.getElementById("modalPanier").style.justifyContent = "center";
-    document.getElementById("modalPanier").style.alignItems = "center";
-    document.getElementById("modalPanier").style.minHeight = "100vh";
-    document.getElementById("modalPanier").style.transition = "all 0.3s";
-    document.getElementById("prod_id").value = id;
-    document.getElementById("nom_produit").innerText = nom;
-    document.getElementById("formPanier").action = "/ajouter-au-panier/" + id + "/";
-}
-
-function fermerModale() {
-    document.getElementById("modalPanier").style.display = "none";
-}
 
 // génération de la facture en pdf
 function imprimer(name) {
@@ -72,10 +39,23 @@ function imprimer(name) {
     });
 }
 
+/* responsivité bar de navigation*/
+
 var elmt = document.getElementById("nav");
 var togler = document.getElementById("toggle")
 function reduire() {
     elmt.classList.toggle("display")
-    elmt.style.transition = "all linear 0.3s"
+    elmt.style.transition = "all 0.3s ease"
     togler.classList.toggle("rot")
 }
+
+
+/* vérifier panier*/
+function verifierPanier(statut) {
+    if (statut == "validé") {
+        return confirm("Etes-vous sûr de vouloir supprimer ce panier?")
+    }else{
+        return confirm("Attention ! ce panier n'est pas encore validé. voulez-vous le supprimer? ")
+    }
+}
+

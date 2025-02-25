@@ -1,0 +1,60 @@
+<!--hérite de base.html-->
+{% extends 'base.html' %}
+
+{% load static %}
+<!--titre de la page-->
+{% block title %} panier {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/selectionner.css' %}">
+{% endblock %}
+<!--titre de la bar d'entete-->
+{% block main-title %}  Panier {% endblock %}
+
+<!--Main content-->
+
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" id="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container-fluid">
+    <h5>Ajouter  <span>{{ produit.nomProduit }} </span>au panier</h5>
+<img src="{{produit.imageProduit.url}}" alt="" class="img-fluid w-25">
+
+{% if paniers %}
+
+    <form method="POST" class="w-50" action="{% url 'ajout_au_panier' produit.id %}">
+        {% csrf_token %}
+        <label>Quantité :</label>
+        <input type="number" name="quantite" min="1" value="1" class="form-control" required >
+        <label for="panier">Choisissez le panier : </label>
+        <select name="panier" id="panier" class="form-select">
+            {% for panier in paniers %}
+            <option value="{{panier.id}}">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>ID: {{panier.id}}</td>-----------------
+                        <td>CLIENT: {% if panier.client.nomClient %}
+                            {{panier.client.nomClient}} {{panier.client.prenomClient}}
+                        {% else %}
+                            anonyme
+                        {% endif %}</td>
+                    </tr>
+                </table>
+            </option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-primary" type="submit">Ajouter</button>
+    </form>
+{% else %}
+    <p class="text-center text-warning">Veillez ajouter un panier d'abord</p>
+{% endif %}
+
+</div>
+{% endblock %}

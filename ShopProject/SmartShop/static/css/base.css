@@ -50,7 +50,6 @@ div.navigationbar{
     position: sticky;
     top: 0;
     z-index: 100;
-    transition: all 0.3s linear !important ;
 }
 
 nav{

@@ -1,5 +1,6 @@
 from django import forms
 from .models import Categorie
+import string
 
 # classe CategorieForm définissant le  formulaire des catégories
 class CategorieForm(forms.Form):
@@ -61,13 +62,12 @@ class ProduitForm(forms.Form):
         self.fields['categorie'].choices = [(cat.id, cat.nomCategorie) for cat in Categorie.objects.all()]
 
     
-    
-
     def clean_nomProduit(self):
         nom = self.cleaned_data.get("nomProduit")
         if len(nom) < 2:
             raise (forms.ValidationError("le nom du produit doit contenir au moins 2 caractères"))  
-        return nom     
+       
+        return nom
     
     def clean_quantite(self):
         qte = self.cleaned_data.get("quantite")
