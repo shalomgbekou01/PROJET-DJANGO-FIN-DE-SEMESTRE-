@@ -67,7 +67,7 @@ class Facture(models.Model):
 # Classe Achat définissant un achat effectué par le client
 class Achat(models.Model):
     produit = models.ForeignKey(Produit, on_delete=models.CASCADE) 
-    panier = models.ForeignKey(Panier, on_delete=models.PROTECT)   
+    panier = models.ForeignKey(Panier, on_delete=models.CASCADE)   
     prixAchat = models.FloatField(default=0.0)
     quantite = models.IntegerField(default=1)
     dateAchat = models.DateTimeField(auto_now=True)
